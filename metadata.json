@@ -1,0 +1,5 @@
+{
+  "name": "Vega Eurobond Engine",
+  "description": "A professional-grade Eurobond pricing terminal for calculating Yield to Maturity and Clean Price using industry-standard 30/360 NASD logic.",
+  "requestFramePermissions": []
+}
