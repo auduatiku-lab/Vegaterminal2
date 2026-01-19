@@ -103,7 +103,8 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 p-4 md:p-8 lg:p-10 flex flex-col items-center selection:bg-cyan-500/30 touch-manipulation">
-      <header className="w-full max-w-7xl flex flex-col md:flex-row items-center justify-between mb-8 md:mb-12 gap-6">
+      {/* Header hidden on mobile (below md breakpoint) */}
+      <header className="hidden md:flex w-full max-w-7xl flex-col md:flex-row items-center justify-between mb-8 md:mb-12 gap-6">
         <div className="flex items-center gap-4">
           <div className="bg-gradient-to-br from-cyan-500 to-blue-600 p-2.5 md:p-3 rounded-2xl shadow-xl shadow-cyan-500/10">
             <Calculator className="text-white" size={28} />
@@ -133,7 +134,7 @@ const App: React.FC = () => {
       </header>
 
       <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 w-full max-w-7xl items-start">
-        {/* INPUTS: Always first */}
+        {/* INPUTS: Order 1 ensures Parameters card stays at top */}
         <div className="lg:col-span-4 order-1 flex flex-col gap-6">
           <section className="bg-zinc-900/60 border border-white/5 rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 blur-[60px] rounded-full -mr-16 -mt-16"></div>
