@@ -4,7 +4,7 @@ import { Bond } from './types';
 export const BONDS: Bond[] = [
   {
     id: 'NG-2030',
-    name: 'NIGERIA 7.143% 02/23/30',
+    name: 'NIGERIA 7.1430% 02/23/30',
     couponRate: 7.143,
     maturityDate: '2030-02-23',
     frequency: 2,

@@ -20,12 +20,13 @@ import {
 } from 'lucide-react';
 
 const App: React.FC = () => {
-  const [selectedBondId, setSelectedBondId] = useState<string>(BONDS[1].id); 
+  // Set default to NG-2030 (index 0)
+  const [selectedBondId, setSelectedBondId] = useState<string>(BONDS[0].id); 
   const [settlementDate, setSettlementDate] = useState<string>("2025-12-29");
   const [faceValueStr, setFaceValueStr] = useState<string>("1,000,000"); 
-  const [cleanPriceStr, setCleanPriceStr] = useState<string>("108.25");
-  const [yieldStr, setYieldStr] = useState<string>("7.45");
-  const [lastSource, setLastSource] = useState<InputSource>('price');
+  const [cleanPriceStr, setCleanPriceStr] = useState<string>("101.50"); // Adjusted default for NG-2030
+  const [yieldStr, setYieldStr] = useState<string>("6.75");
+  const [lastSource, setLastSource] = useState<InputSource>('yield');
   const [insight, setInsight] = useState<string>('');
   const [loadingInsight, setLoadingInsight] = useState<boolean>(false);
 
