@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { Bond, CalculationResult, InputSource } from './types';
-import { BONDS, DEFAULT_SETTLEMENT } from './constants';
+import { BONDS } from './constants';
 import { calculateBondPrice, calculateYield } from './services/bondCalculator';
 import { getMarketInsight } from './services/geminiService';
 import { 
@@ -20,13 +20,13 @@ import {
 } from 'lucide-react';
 
 const App: React.FC = () => {
-  // Set default to NG-2030 (index 0)
+  // Parity State: Angola 2032, FV 400k, Price 92.22, Date 2024-04-02
   const [selectedBondId, setSelectedBondId] = useState<string>(BONDS[0].id); 
-  const [settlementDate, setSettlementDate] = useState<string>("2025-12-29");
-  const [faceValueStr, setFaceValueStr] = useState<string>("1,000,000"); 
-  const [cleanPriceStr, setCleanPriceStr] = useState<string>("101.50"); // Adjusted default for NG-2030
-  const [yieldStr, setYieldStr] = useState<string>("6.75");
-  const [lastSource, setLastSource] = useState<InputSource>('yield');
+  const [settlementDate, setSettlementDate] = useState<string>("2024-04-02");
+  const [faceValueStr, setFaceValueStr] = useState<string>("400,000"); 
+  const [cleanPriceStr, setCleanPriceStr] = useState<string>("92.22"); 
+  const [yieldStr, setYieldStr] = useState<string>("10.15"); 
+  const [lastSource, setLastSource] = useState<InputSource>('price');
   const [insight, setInsight] = useState<string>('');
   const [loadingInsight, setLoadingInsight] = useState<boolean>(false);
 
@@ -117,7 +117,6 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 p-4 md:p-8 lg:p-10 flex flex-col items-center selection:bg-cyan-500/30 touch-manipulation">
-      {/* Navigation / Header */}
       <header className="w-full max-w-7xl flex flex-col md:flex-row items-center justify-between mb-8 md:mb-12 gap-6">
         <div className="flex items-center gap-4">
           <div className="bg-gradient-to-br from-cyan-500 to-blue-600 p-2.5 md:p-3 rounded-2xl shadow-xl shadow-cyan-500/10">
@@ -148,7 +147,6 @@ const App: React.FC = () => {
       </header>
 
       <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 w-full max-w-7xl">
-        {/* LEFT COLUMN: INPUTS */}
         <div className="lg:col-span-4 flex flex-col gap-6">
           <section className="bg-zinc-900/60 border border-white/5 rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 blur-[60px] rounded-full -mr-16 -mt-16"></div>
@@ -255,7 +253,6 @@ const App: React.FC = () => {
           </section>
         </div>
 
-        {/* RIGHT COLUMN: RESULTS */}
         <div className="lg:col-span-8 space-y-6 md:space-y-8">
           <section className="bg-zinc-900/60 border border-white/5 rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-10 backdrop-blur-xl shadow-2xl h-full flex flex-col relative overflow-hidden">
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-violet-600/5 blur-[100px] rounded-full -mb-32 -mr-32"></div>
@@ -324,7 +321,6 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            {/* AI INSIGHT SECTION */}
             <section className="mt-10 md:mt-14 pt-8 md:pt-10 border-t border-white/5">
                <div className="flex items-center gap-3 mb-5 md:mb-6 text-violet-400 uppercase text-[9px] md:text-[10px] font-black tracking-[0.4em]">
                  <MessageSquare size={16} />
@@ -347,7 +343,6 @@ const App: React.FC = () => {
                </div>
             </section>
 
-            {/* SPECS FOOTER */}
             <section className="mt-8 md:mt-10 pt-8 md:pt-10 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
               <div>
                 <p className="text-[8px] md:text-[9px] font-black text-zinc-600 uppercase mb-2 tracking-[0.2em]">Coupon</p>

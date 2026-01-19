@@ -3,6 +3,14 @@ import { Bond } from './types';
 
 export const BONDS: Bond[] = [
   {
+    id: 'AO-2032',
+    name: 'ANGOLA 8.750% 03/14/32',
+    couponRate: 8.75,
+    maturityDate: '2032-03-14',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
     id: 'NG-2030',
     name: 'NIGERIA 7.1430% 02/23/30',
     couponRate: 7.143,
@@ -109,4 +117,4 @@ export const BONDS: Bond[] = [
   }
 ];
 
-export const DEFAULT_SETTLEMENT = new Date().toISOString().split('T')[0];
+export const DEFAULT_SETTLEMENT = '2024-04-02';
