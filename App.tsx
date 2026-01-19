@@ -103,30 +103,30 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 p-4 md:p-8 lg:p-10 flex flex-col items-center selection:bg-cyan-500/30 touch-manipulation">
-      {/* Header hidden on mobile (below md breakpoint) */}
-      <header className="hidden md:flex w-full max-w-7xl flex-col md:flex-row items-center justify-between mb-8 md:mb-12 gap-6">
+      {/* Header hidden on Mobile/Tablet, visible only on Desktop (lg) */}
+      <header className="hidden lg:flex w-full max-w-7xl flex-row items-center justify-between mb-12 gap-6">
         <div className="flex items-center gap-4">
-          <div className="bg-gradient-to-br from-cyan-500 to-blue-600 p-2.5 md:p-3 rounded-2xl shadow-xl shadow-cyan-500/10">
+          <div className="bg-gradient-to-br from-cyan-500 to-blue-600 p-3 rounded-2xl shadow-xl shadow-cyan-500/10">
             <Calculator className="text-white" size={28} />
           </div>
           <div>
-            <h1 className="text-xl md:text-2xl font-black tracking-tighter text-white flex items-center gap-2">
+            <h1 className="text-2xl font-black tracking-tighter text-white flex items-center gap-2">
               VEGA <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">TERMINAL</span>
             </h1>
-            <div className="flex items-center gap-2 text-[9px] md:text-[10px] text-zinc-500 font-bold uppercase tracking-[0.3em]">
+            <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-bold uppercase tracking-[0.3em]">
               <Cpu size={10} className="text-cyan-600" />
               SIA Engine v4.2.0
             </div>
           </div>
         </div>
         
-        <div className="flex items-center gap-4 md:gap-8 bg-zinc-900/50 px-4 md:px-6 py-2.5 md:py-3 rounded-2xl border border-white/5 backdrop-blur-md w-full md:w-auto justify-center md:justify-start">
-          <div className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">
+        <div className="flex items-center gap-8 bg-zinc-900/50 px-6 py-3 rounded-2xl border border-white/5 backdrop-blur-md">
+          <div className="flex items-center gap-2 text-xs font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">
             <Globe size={14} className="text-cyan-400" />
             NASD 30/360
           </div>
-          <div className="w-px h-4 bg-zinc-800 hidden md:block"></div>
-          <div className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">
+          <div className="w-px h-4 bg-zinc-800"></div>
+          <div className="flex items-center gap-2 text-xs font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">
             <Activity size={14} className="text-emerald-400" />
             Live Parity
           </div>
@@ -134,8 +134,10 @@ const App: React.FC = () => {
       </header>
 
       <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 w-full max-w-7xl items-start">
-        {/* INPUTS: Order 1 ensures Parameters card stays at top */}
-        <div className="lg:col-span-4 order-1 flex flex-col gap-6">
+        
+        {/* 1. PARAMETERS CARD */}
+        {/* Mobile: Top (order-1) | Desktop: Left Column Row 1 */}
+        <div className="lg:col-span-4 lg:col-start-1 lg:row-start-1 order-1 flex flex-col gap-6">
           <section className="bg-zinc-900/60 border border-white/5 rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 blur-[60px] rounded-full -mr-16 -mt-16"></div>
             
@@ -219,8 +221,9 @@ const App: React.FC = () => {
           </section>
         </div>
 
-        {/* PRICING OUTPUT: Order 2 on mobile, Order 3 (right side) on desktop */}
-        <div className="lg:col-span-8 order-2 lg:order-3 lg:row-span-2 h-full flex flex-col">
+        {/* 2. PRICING OUTPUT CARD */}
+        {/* Mobile: Second (order-2) | Desktop: Right Column (col-start-5), Spanning Rows 1 & 2 */}
+        <div className="lg:col-span-8 lg:col-start-5 lg:row-start-1 lg:row-span-2 order-2 h-full flex flex-col">
           <section className="bg-zinc-900/60 border border-white/5 rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-10 backdrop-blur-xl shadow-2xl flex-grow flex flex-col relative overflow-hidden">
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-violet-600/5 blur-[100px] rounded-full -mb-32 -mr-32"></div>
             
@@ -309,8 +312,9 @@ const App: React.FC = () => {
           </section>
         </div>
 
-        {/* ACCRUAL MATRIX: Order 3 on mobile, Order 2 (below inputs) on desktop */}
-        <div className="lg:col-span-4 order-3 lg:order-2 flex flex-col gap-6">
+        {/* 3. ACCRUAL MATRIX CARD */}
+        {/* Mobile: Bottom (order-3) | Desktop: Left Column Row 2 (lg:col-start-1 lg:row-start-2) */}
+        <div className="lg:col-span-4 lg:col-start-1 lg:row-start-2 order-3 flex flex-col gap-6">
           <section className="bg-cyan-950/20 border border-cyan-500/20 rounded-3xl p-6 backdrop-blur-md">
             <h2 className="text-[10px] font-black text-cyan-400 flex items-center gap-2 uppercase tracking-[0.25em] mb-4">
               <Activity size={12} />
