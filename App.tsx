@@ -15,7 +15,8 @@ import {
   Zap,
   MessageSquare,
   TrendingUp,
-  Cpu
+  Cpu,
+  ChevronDown
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -98,10 +99,6 @@ const App: React.FC = () => {
     triggerInsight();
   }, [selectedBondId]);
 
-  /**
-   * Strictly formats numbers to 2 decimal places with thousands separators.
-   * Forces .00 even if the value is a whole number.
-   */
   const formatCurrency = (val: number) => {
     if (val === undefined || val === null || isNaN(val)) return "0.00";
     const fixedVal = val.toFixed(2);
@@ -118,65 +115,68 @@ const App: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 p-4 md:p-10 flex flex-col items-center selection:bg-cyan-500/30">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 p-4 md:p-8 lg:p-10 flex flex-col items-center selection:bg-cyan-500/30 touch-manipulation">
       {/* Navigation / Header */}
-      <div className="w-full max-w-7xl flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
+      <header className="w-full max-w-7xl flex flex-col md:flex-row items-center justify-between mb-8 md:mb-12 gap-6">
         <div className="flex items-center gap-4">
-          <div className="bg-gradient-to-br from-cyan-500 to-blue-600 p-3 rounded-2xl shadow-xl shadow-cyan-500/10">
-            <Calculator className="text-white" size={32} />
+          <div className="bg-gradient-to-br from-cyan-500 to-blue-600 p-2.5 md:p-3 rounded-2xl shadow-xl shadow-cyan-500/10">
+            <Calculator className="text-white" size={28} />
           </div>
           <div>
-            <h1 className="text-2xl font-black tracking-tighter text-white flex items-center gap-2">
+            <h1 className="text-xl md:text-2xl font-black tracking-tighter text-white flex items-center gap-2">
               VEGA <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">TERMINAL</span>
             </h1>
-            <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-bold uppercase tracking-[0.3em]">
-              <Cpu size={12} className="text-cyan-600" />
+            <div className="flex items-center gap-2 text-[9px] md:text-[10px] text-zinc-500 font-bold uppercase tracking-[0.3em]">
+              <Cpu size={10} className="text-cyan-600" />
               SIA Engine v4.2.0
             </div>
           </div>
         </div>
         
-        <div className="flex items-center gap-8 bg-zinc-900/50 px-6 py-3 rounded-2xl border border-white/5 backdrop-blur-md">
-          <div className="flex items-center gap-2 text-xs font-bold text-zinc-400 uppercase tracking-widest">
+        <div className="flex items-center gap-4 md:gap-8 bg-zinc-900/50 px-4 md:px-6 py-2.5 md:py-3 rounded-2xl border border-white/5 backdrop-blur-md w-full md:w-auto justify-center md:justify-start">
+          <div className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">
             <Globe size={14} className="text-cyan-400" />
             NASD 30/360
           </div>
-          <div className="w-px h-4 bg-zinc-800"></div>
-          <div className="flex items-center gap-2 text-xs font-bold text-zinc-400 uppercase tracking-widest">
+          <div className="w-px h-4 bg-zinc-800 hidden md:block"></div>
+          <div className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">
             <Activity size={14} className="text-emerald-400" />
             Live Parity
           </div>
         </div>
-      </div>
+      </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full max-w-7xl">
+      <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 w-full max-w-7xl">
         {/* LEFT COLUMN: INPUTS */}
         <div className="lg:col-span-4 flex flex-col gap-6">
-          <div className="bg-zinc-900/60 border border-white/5 rounded-[2.5rem] p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
+          <section className="bg-zinc-900/60 border border-white/5 rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 blur-[60px] rounded-full -mr-16 -mt-16"></div>
             
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-between mb-6 md:mb-8">
               <h2 className="text-sm font-extrabold text-white flex items-center gap-2 uppercase tracking-tight">
                 <ArrowRightLeft size={18} className="text-cyan-400" />
                 Parameters
               </h2>
             </div>
 
-            <div className="space-y-6">
-              <div>
+            <div className="space-y-5 md:space-y-6">
+              <div className="relative group">
                 <FormLabel label="Instrument" icon={<Zap size={12} />} />
-                <select 
-                  value={selectedBondId}
-                  onChange={(e) => setSelectedBondId(e.target.value)}
-                  className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3 px-4 text-white font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-pointer appearance-none"
-                >
-                  {BONDS.map(bond => (
-                    <option key={bond.id} value={bond.id} className="bg-zinc-950">{bond.name}</option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select 
+                    value={selectedBondId}
+                    onChange={(e) => setSelectedBondId(e.target.value)}
+                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 px-4 text-white font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-pointer appearance-none pr-10"
+                  >
+                    {BONDS.map(bond => (
+                      <option key={bond.id} value={bond.id} className="bg-zinc-950">{bond.name}</option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" size={16} />
+                </div>
               </div>
 
-              <div>
+              <div className="relative">
                 <FormLabel label="Nominal Value" icon={<TrendingUp size={12} />} />
                 <div className="relative">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">
@@ -184,9 +184,10 @@ const App: React.FC = () => {
                   </div>
                   <input
                     type="text"
+                    inputMode="numeric"
                     value={faceValueStr}
                     onChange={(e) => handleFaceValueChange(e.target.value)}
-                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white font-mono font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm"
+                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 pl-10 pr-4 text-white font-mono font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm"
                   />
                 </div>
               </div>
@@ -196,9 +197,10 @@ const App: React.FC = () => {
                   <FormLabel label="Price" />
                   <input
                     type="text"
+                    inputMode="decimal"
                     value={cleanPriceStr}
                     onChange={(e) => handlePriceChange(e.target.value)}
-                    className={`w-full bg-zinc-950 border rounded-xl py-3 px-4 font-mono font-bold text-sm focus:outline-none transition-all ${
+                    className={`w-full bg-zinc-950 border rounded-xl py-3.5 px-4 font-mono font-bold text-sm focus:outline-none transition-all ${
                       lastSource === 'price' ? 'border-cyan-500 ring-4 ring-cyan-500/10 text-cyan-400 shadow-[0_0_20px_-5px_rgba(6,182,212,0.3)]' : 'border-white/10 text-zinc-300'
                     }`}
                   />
@@ -207,28 +209,29 @@ const App: React.FC = () => {
                   <FormLabel label="Yield (%)" />
                   <input
                     type="text"
+                    inputMode="decimal"
                     value={yieldStr}
                     onChange={(e) => handleYieldChange(e.target.value)}
-                    className={`w-full bg-zinc-950 border rounded-xl py-3 px-4 font-mono font-bold text-sm focus:outline-none transition-all ${
+                    className={`w-full bg-zinc-950 border rounded-xl py-3.5 px-4 font-mono font-bold text-sm focus:outline-none transition-all ${
                       lastSource === 'yield' ? 'border-emerald-500 ring-4 ring-emerald-500/10 text-emerald-400 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]' : 'border-white/10 text-zinc-300'
                     }`}
                   />
                 </div>
               </div>
 
-              <div>
+              <div className="relative">
                 <FormLabel label="Value Date" icon={<Calendar size={12} />} />
                 <input
                   type="date"
                   value={settlementDate}
                   onChange={(e) => setSettlementDate(e.target.value)}
-                  className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3 px-4 text-white font-mono font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm invert-[0.9] brightness-[1.5]"
+                  className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 px-4 text-white font-mono font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm appearance-none color-scheme-dark"
                 />
               </div>
             </div>
-          </div>
+          </section>
 
-          <div className="bg-cyan-950/20 border border-cyan-500/20 rounded-[2rem] p-6 backdrop-blur-md">
+          <section className="bg-cyan-950/20 border border-cyan-500/20 rounded-3xl p-6 backdrop-blur-md">
             <h2 className="text-[10px] font-black text-cyan-400 flex items-center gap-2 uppercase tracking-[0.25em] mb-4">
               <Activity size={12} />
               Accrual Matrix
@@ -248,72 +251,72 @@ const App: React.FC = () => {
                 <span className="text-cyan-400 text-xl font-black">{results.daysAccrued}</span>
               </div>
             </div>
-          </div>
+          </section>
         </div>
 
         {/* RIGHT COLUMN: RESULTS */}
-        <div className="lg:col-span-8 space-y-8">
-          <div className="bg-zinc-900/60 border border-white/5 rounded-[3rem] p-10 backdrop-blur-xl shadow-2xl h-full flex flex-col relative overflow-hidden">
+        <div className="lg:col-span-8 space-y-6 md:space-y-8">
+          <section className="bg-zinc-900/60 border border-white/5 rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-10 backdrop-blur-xl shadow-2xl h-full flex flex-col relative overflow-hidden">
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-violet-600/5 blur-[100px] rounded-full -mb-32 -mr-32"></div>
             
-            <div className="flex items-center gap-3 text-zinc-400 mb-10">
+            <div className="flex items-center gap-3 text-zinc-400 mb-8 md:mb-10">
               <Info size={20} className="text-cyan-500" />
               <span className="text-xs font-black uppercase tracking-[0.3em] text-zinc-500">Pricing Output</span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
-              <div className="md:col-span-8 space-y-10">
-                <div>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12">
+              <div className="md:col-span-8 space-y-8 md:space-y-10">
+                <div className="group transition-transform active:scale-[0.99]">
                   <FormLabel label="Principal Amount" icon={<DollarSign size={12} />} />
-                  <div className="text-3xl md:text-4xl font-black mono text-white tracking-tighter break-all">
-                    <span className="text-zinc-500 text-2xl font-medium mr-1">$</span>
+                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono text-white tracking-tighter break-words overflow-hidden">
+                    <span className="text-zinc-500 text-xl md:text-2xl lg:text-3xl font-medium mr-1">$</span>
                     {formatCurrency(results.principalAmount)}
                   </div>
-                  <div className="text-[10px] text-cyan-400/70 mt-2 uppercase font-black tracking-widest bg-cyan-500/10 inline-block px-2 py-0.5 rounded">
+                  <div className="text-[10px] text-cyan-400/70 mt-2 uppercase font-black tracking-widest bg-cyan-500/10 inline-block px-2 py-0.5 rounded border border-cyan-500/20">
                     @{results.cleanPrice.toFixed(4)}% SIA
                   </div>
                 </div>
 
-                <div>
+                <div className="group transition-transform active:scale-[0.99]">
                   <FormLabel label={`Accrued Interest (${results.daysAccrued}d)`} />
-                  <div className="text-2xl md:text-3xl font-black mono text-zinc-300 tracking-tighter break-all">
-                    <span className="text-zinc-500 text-xl font-medium mr-1">$</span>
+                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black mono text-zinc-300 tracking-tighter break-words overflow-hidden">
+                    <span className="text-zinc-500 text-lg md:text-xl lg:text-2xl font-medium mr-1">$</span>
                     {formatCurrency(results.accruedAmount)}
                   </div>
                 </div>
 
-                <div className="pt-4">
-                  <div className="bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 border border-white/10 rounded-[2rem] p-8 relative overflow-hidden group shadow-2xl transition-all hover:scale-[1.01] hover:shadow-violet-500/10">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <div className="pt-2 md:pt-4">
+                  <div className="bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 border border-white/10 rounded-[2rem] p-6 md:p-8 relative overflow-hidden group shadow-2xl transition-all hover:scale-[1.01] hover:shadow-violet-500/10 active:scale-[0.98]">
+                    <div className="absolute top-0 right-0 p-4 opacity-5 md:opacity-10 group-hover:opacity-20 transition-opacity">
                       <Zap size={60} className="text-violet-500" />
                     </div>
                     <div className="relative z-10">
                       <FormLabel label="Net Settlement (All-in)" />
-                      <div className="text-3xl md:text-4xl font-black mono text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-500 mb-4 tracking-tighter break-all">
+                      <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-500 mb-4 tracking-tighter break-words overflow-hidden">
                         ${formatCurrency(results.totalConsideration)}
                       </div>
                       <p className="text-[10px] text-zinc-500 font-bold leading-relaxed max-w-xs uppercase tracking-wider italic">
-                        Final cash consideration for {activeBond.currency} settlement on {settlementDate}.
+                        Final cash consideration for {activeBond.currency} on {settlementDate}.
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="md:col-span-4 hidden md:flex flex-col justify-center border-l border-white/5 pl-12">
+              <div className="md:col-span-4 hidden md:flex flex-col justify-center border-l border-white/5 pl-8 lg:pl-12">
                  <div className="space-y-6">
                     <div className="flex items-center gap-4 text-zinc-500">
-                       <Activity size={24} className="text-cyan-500 opacity-50" />
+                       <Activity size={24} className="text-cyan-500 opacity-40" />
                        <div>
-                         <p className="text-[10px] font-black uppercase tracking-widest text-zinc-600">Analytics Status</p>
-                         <p className="text-xs font-bold text-zinc-400">VALUATION ENGINE ACTIVE</p>
+                         <p className="text-[9px] font-black uppercase tracking-widest text-zinc-600">Analytics Status</p>
+                         <p className="text-[11px] font-bold text-zinc-400">ENGINE ACTIVE</p>
                        </div>
                     </div>
                     <div className="flex items-center gap-4 text-zinc-500">
-                       <Globe size={24} className="text-blue-500 opacity-50" />
+                       <Globe size={24} className="text-blue-500 opacity-40" />
                        <div>
-                         <p className="text-[10px] font-black uppercase tracking-widest text-zinc-600">Region Coverage</p>
-                         <p className="text-xs font-bold text-zinc-400">EMEA SOVEREIGN DEBT</p>
+                         <p className="text-[9px] font-black uppercase tracking-widest text-zinc-600">Region Coverage</p>
+                         <p className="text-[11px] font-bold text-zinc-400">EMEA SOVEREIGN</p>
                        </div>
                     </div>
                  </div>
@@ -321,16 +324,16 @@ const App: React.FC = () => {
             </div>
 
             {/* AI INSIGHT SECTION */}
-            <div className="mt-14 pt-10 border-t border-white/5">
-               <div className="flex items-center gap-3 mb-6 text-violet-400 uppercase text-[10px] font-black tracking-[0.4em]">
+            <section className="mt-10 md:mt-14 pt-8 md:pt-10 border-t border-white/5">
+               <div className="flex items-center gap-3 mb-5 md:mb-6 text-violet-400 uppercase text-[9px] md:text-[10px] font-black tracking-[0.4em]">
                  <MessageSquare size={16} />
                  Vega Alpha Intelligence
                </div>
-               <div className="bg-zinc-950/80 rounded-2xl p-6 border border-white/5 text-sm text-zinc-300 leading-relaxed min-h-[80px] flex items-center relative overflow-hidden">
+               <div className="bg-zinc-950/80 rounded-2xl p-5 md:p-6 border border-white/5 text-sm text-zinc-300 leading-relaxed min-h-[80px] flex items-center relative overflow-hidden group shadow-inner">
                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-violet-500 to-transparent"></div>
                  {loadingInsight ? (
                    <div className="flex gap-2 items-center">
-                     <span className="text-zinc-500 italic font-mono uppercase text-[10px]">Processing macro data</span>
+                     <span className="text-zinc-500 italic font-mono uppercase text-[9px] md:text-[10px]">Processing macro data</span>
                      <div className="flex gap-1.5">
                        <div className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse"></div>
                        <div className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse [animation-delay:-0.2s]"></div>
@@ -341,38 +344,38 @@ const App: React.FC = () => {
                    <span className="font-medium">{insight || "Analyze historical credit spreads and local macro trends..."}</span>
                  )}
                </div>
-            </div>
+            </section>
 
             {/* SPECS FOOTER */}
-            <div className="mt-10 pt-10 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8">
+            <section className="mt-8 md:mt-10 pt-8 md:pt-10 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
               <div>
-                <p className="text-[9px] font-black text-zinc-600 uppercase mb-2 tracking-[0.2em]">Coupon</p>
-                <p className="text-sm font-black text-zinc-100 mono">{activeBond.couponRate.toFixed(4)}%</p>
+                <p className="text-[8px] md:text-[9px] font-black text-zinc-600 uppercase mb-2 tracking-[0.2em]">Coupon</p>
+                <p className="text-xs md:text-sm font-black text-zinc-100 mono">{activeBond.couponRate.toFixed(4)}%</p>
               </div>
               <div>
-                <p className="text-[9px] font-black text-zinc-600 uppercase mb-2 tracking-[0.2em]">Maturity</p>
-                <p className="text-sm font-black text-zinc-100 mono">{activeBond.displayMaturity || activeBond.maturityDate}</p>
+                <p className="text-[8px] md:text-[9px] font-black text-zinc-600 uppercase mb-2 tracking-[0.2em]">Maturity</p>
+                <p className="text-xs md:text-sm font-black text-zinc-100 mono">{activeBond.displayMaturity || activeBond.maturityDate}</p>
               </div>
               <div>
-                <p className="text-[9px] font-black text-zinc-600 uppercase mb-2 tracking-[0.2em]">Currency</p>
-                <p className="text-sm font-black text-zinc-100 mono">{activeBond.currency}</p>
+                <p className="text-[8px] md:text-[9px] font-black text-zinc-600 uppercase mb-2 tracking-[0.2em]">Currency</p>
+                <p className="text-xs md:text-sm font-black text-zinc-100 mono">{activeBond.currency}</p>
               </div>
               <div>
-                <p className="text-[9px] font-black text-zinc-600 uppercase mb-2 tracking-[0.2em]">Cycle</p>
-                <p className="text-sm font-black text-cyan-500 mono">{activeBond.frequency === 4 ? 'QUARTERLY' : 'SEMIANNUAL'}</p>
+                <p className="text-[8px] md:text-[9px] font-black text-zinc-600 uppercase mb-2 tracking-[0.2em]">Cycle</p>
+                <p className="text-xs md:text-sm font-black text-cyan-500 mono">{activeBond.frequency === 4 ? 'QUARTERLY' : 'SEMIANNUAL'}</p>
               </div>
-            </div>
-          </div>
+            </section>
+          </section>
         </div>
-      </div>
+      </main>
 
-      <footer className="mt-16 text-zinc-600 text-[10px] uppercase font-black tracking-[0.5em] flex flex-wrap items-center justify-center gap-6 pb-10">
+      <footer className="mt-12 md:mt-16 text-zinc-600 text-[9px] md:text-[10px] uppercase font-black tracking-[0.3em] md:tracking-[0.5em] flex flex-wrap items-center justify-center gap-4 md:gap-6 pb-10 px-4 text-center">
         <span>© 2025 VEGA SECURITIES</span>
-        <span className="w-1 h-1 rounded-full bg-zinc-800"></span>
+        <span className="w-1 h-1 rounded-full bg-zinc-800 hidden sm:inline-block"></span>
         <span className="text-zinc-700">SIA COMPLIANT</span>
-        <span className="w-1 h-1 rounded-full bg-zinc-800"></span>
+        <span className="w-1 h-1 rounded-full bg-zinc-800 hidden sm:inline-block"></span>
         <span className="text-zinc-700">NASD 30/360</span>
-        <span className="w-1 h-1 rounded-full bg-zinc-800"></span>
+        <span className="w-1 h-1 rounded-full bg-zinc-800 hidden sm:inline-block"></span>
         <span className="text-emerald-500/50">BBG PARITY ENGAGE</span>
       </footer>
     </div>
