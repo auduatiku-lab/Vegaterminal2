@@ -13,14 +13,13 @@ import {
   DollarSign,
   Activity,
   Zap,
-  Percent,
   MessageSquare,
   TrendingUp,
   Cpu
 } from 'lucide-react';
 
 const App: React.FC = () => {
-  const [selectedBondId, setSelectedBondId] = useState<string>(BONDS[1].id); // Start with NG-2036
+  const [selectedBondId, setSelectedBondId] = useState<string>(BONDS[1].id); 
   const [settlementDate, setSettlementDate] = useState<string>("2025-12-29");
   const [faceValueStr, setFaceValueStr] = useState<string>("1,000,000"); 
   const [cleanPriceStr, setCleanPriceStr] = useState<string>("108.25");
@@ -99,8 +98,16 @@ const App: React.FC = () => {
     triggerInsight();
   }, [selectedBondId]);
 
+  /**
+   * Strictly formats numbers to 2 decimal places with thousands separators.
+   * Forces .00 even if the value is a whole number.
+   */
   const formatCurrency = (val: number) => {
-    return val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (val === undefined || val === null || isNaN(val)) return "0.00";
+    const fixedVal = val.toFixed(2);
+    const [intPart, decimalPart] = fixedVal.split(".");
+    const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return `${formattedInt}.${decimalPart}`;
   };
 
   const FormLabel: React.FC<{ label: string; icon?: React.ReactNode }> = ({ label, icon }) => (
@@ -254,12 +261,12 @@ const App: React.FC = () => {
               <span className="text-xs font-black uppercase tracking-[0.3em] text-zinc-500">Pricing Output</span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <div className="space-y-10">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+              <div className="md:col-span-8 space-y-10">
                 <div>
                   <FormLabel label="Principal Amount" icon={<DollarSign size={12} />} />
-                  <div className="text-5xl font-black mono text-white tracking-tighter">
-                    <span className="text-zinc-500 text-3xl font-medium mr-1">$</span>
+                  <div className="text-3xl md:text-4xl font-black mono text-white tracking-tighter break-all">
+                    <span className="text-zinc-500 text-2xl font-medium mr-1">$</span>
                     {formatCurrency(results.principalAmount)}
                   </div>
                   <div className="text-[10px] text-cyan-400/70 mt-2 uppercase font-black tracking-widest bg-cyan-500/10 inline-block px-2 py-0.5 rounded">
@@ -268,36 +275,48 @@ const App: React.FC = () => {
                 </div>
 
                 <div>
-                  <FormLabel label="Yield to Maturity" icon={<Percent size={12} />} />
-                  <div className="text-5xl font-black mono text-emerald-400 tracking-tighter drop-shadow-[0_0_15px_rgba(52,211,153,0.3)]">
-                    {(parseFloat(yieldStr) || 0).toFixed(6)}%
+                  <FormLabel label={`Accrued Interest (${results.daysAccrued}d)`} />
+                  <div className="text-2xl md:text-3xl font-black mono text-zinc-300 tracking-tighter break-all">
+                    <span className="text-zinc-500 text-xl font-medium mr-1">$</span>
+                    {formatCurrency(results.accruedAmount)}
                   </div>
                 </div>
 
-                <div>
-                  <FormLabel label={`Accrued (${results.daysAccrued}d)`} />
-                  <div className="text-4xl font-black mono text-zinc-300 tracking-tighter">
-                    <span className="text-zinc-500 text-2xl font-medium mr-1">$</span>
-                    {formatCurrency(results.accruedAmount)}
+                <div className="pt-4">
+                  <div className="bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 border border-white/10 rounded-[2rem] p-8 relative overflow-hidden group shadow-2xl transition-all hover:scale-[1.01] hover:shadow-violet-500/10">
+                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                      <Zap size={60} className="text-violet-500" />
+                    </div>
+                    <div className="relative z-10">
+                      <FormLabel label="Net Settlement (All-in)" />
+                      <div className="text-3xl md:text-4xl font-black mono text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-500 mb-4 tracking-tighter break-all">
+                        ${formatCurrency(results.totalConsideration)}
+                      </div>
+                      <p className="text-[10px] text-zinc-500 font-bold leading-relaxed max-w-xs uppercase tracking-wider italic">
+                        Final cash consideration for {activeBond.currency} settlement on {settlementDate}.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-col justify-end">
-                <div className="bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 border border-white/10 rounded-[2.5rem] p-10 relative overflow-hidden group shadow-2xl transition-all hover:scale-[1.01] hover:shadow-violet-500/10">
-                  <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <Zap size={80} className="text-violet-500" />
-                  </div>
-                  <div className="relative z-10">
-                    <FormLabel label="Net Settlement (All-in)" />
-                    <div className="text-6xl font-black mono text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-500 mb-4 tracking-tighter">
-                      ${formatCurrency(results.totalConsideration)}
+              <div className="md:col-span-4 hidden md:flex flex-col justify-center border-l border-white/5 pl-12">
+                 <div className="space-y-6">
+                    <div className="flex items-center gap-4 text-zinc-500">
+                       <Activity size={24} className="text-cyan-500 opacity-50" />
+                       <div>
+                         <p className="text-[10px] font-black uppercase tracking-widest text-zinc-600">Analytics Status</p>
+                         <p className="text-xs font-bold text-zinc-400">VALUATION ENGINE ACTIVE</p>
+                       </div>
                     </div>
-                    <p className="text-[11px] text-zinc-500 font-bold leading-relaxed max-w-xs uppercase tracking-wider italic">
-                      Final cash consideration for {activeBond.currency} settlement on {settlementDate}.
-                    </p>
-                  </div>
-                </div>
+                    <div className="flex items-center gap-4 text-zinc-500">
+                       <Globe size={24} className="text-blue-500 opacity-50" />
+                       <div>
+                         <p className="text-[10px] font-black uppercase tracking-widest text-zinc-600">Region Coverage</p>
+                         <p className="text-xs font-bold text-zinc-400">EMEA SOVEREIGN DEBT</p>
+                       </div>
+                    </div>
+                 </div>
               </div>
             </div>
 
