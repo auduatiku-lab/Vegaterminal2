@@ -3,7 +3,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Bond, CalculationResult, InputSource } from './types';
 import { BONDS } from './constants';
 import { calculateBondPrice, calculateYield } from './services/bondCalculator';
-import { getMarketInsight } from './services/geminiService';
 import { 
   Calculator, 
   Globe, 
@@ -13,7 +12,6 @@ import {
   DollarSign,
   Activity,
   Zap,
-  MessageSquare,
   TrendingUp,
   Cpu,
   ChevronDown
@@ -27,8 +25,6 @@ const App: React.FC = () => {
   const [cleanPriceStr, setCleanPriceStr] = useState<string>("92.22"); 
   const [yieldStr, setYieldStr] = useState<string>("10.15"); 
   const [lastSource, setLastSource] = useState<InputSource>('price');
-  const [insight, setInsight] = useState<string>('');
-  const [loadingInsight, setLoadingInsight] = useState<boolean>(false);
 
   const faceValue = useMemo(() => {
     const n = parseFloat(faceValueStr.replace(/,/g, ''));
@@ -89,16 +85,6 @@ const App: React.FC = () => {
     const numeric = parseInt(sanitized || "0", 10);
     setFaceValueStr(numeric.toLocaleString());
   };
-
-  useEffect(() => {
-    const triggerInsight = async () => {
-      setLoadingInsight(true);
-      const text = await getMarketInsight(activeBond.name, parseFloat(yieldStr) || 0);
-      setInsight(text || '');
-      setLoadingInsight(false);
-    };
-    triggerInsight();
-  }, [selectedBondId]);
 
   const formatCurrency = (val: number) => {
     if (val === undefined || val === null || isNaN(val)) return "0.00";
@@ -320,28 +306,6 @@ const App: React.FC = () => {
                  </div>
               </div>
             </div>
-
-            <section className="mt-10 md:mt-14 pt-8 md:pt-10 border-t border-white/5">
-               <div className="flex items-center gap-3 mb-5 md:mb-6 text-violet-400 uppercase text-[9px] md:text-[10px] font-black tracking-[0.4em]">
-                 <MessageSquare size={16} />
-                 Vega Alpha Intelligence
-               </div>
-               <div className="bg-zinc-950/80 rounded-2xl p-5 md:p-6 border border-white/5 text-sm text-zinc-300 leading-relaxed min-h-[80px] flex items-center relative overflow-hidden group shadow-inner">
-                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-violet-500 to-transparent"></div>
-                 {loadingInsight ? (
-                   <div className="flex gap-2 items-center">
-                     <span className="text-zinc-500 italic font-mono uppercase text-[9px] md:text-[10px]">Processing macro data</span>
-                     <div className="flex gap-1.5">
-                       <div className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse"></div>
-                       <div className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse [animation-delay:-0.2s]"></div>
-                       <div className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse [animation-delay:-0.4s]"></div>
-                     </div>
-                   </div>
-                 ) : (
-                   <span className="font-medium">{insight || "Analyze historical credit spreads and local macro trends..."}</span>
-                 )}
-               </div>
-            </section>
 
             <section className="mt-8 md:mt-10 pt-8 md:pt-10 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
               <div>
