@@ -132,8 +132,9 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 w-full max-w-7xl">
-        <div className="lg:col-span-4 flex flex-col gap-6">
+      <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 w-full max-w-7xl items-start">
+        {/* INPUTS: Always first */}
+        <div className="lg:col-span-4 order-1 flex flex-col gap-6">
           <section className="bg-zinc-900/60 border border-white/5 rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 blur-[60px] rounded-full -mr-16 -mt-16"></div>
             
@@ -215,32 +216,11 @@ const App: React.FC = () => {
               </div>
             </div>
           </section>
-
-          <section className="bg-cyan-950/20 border border-cyan-500/20 rounded-3xl p-6 backdrop-blur-md">
-            <h2 className="text-[10px] font-black text-cyan-400 flex items-center gap-2 uppercase tracking-[0.25em] mb-4">
-              <Activity size={12} />
-              Accrual Matrix
-            </h2>
-            <div className="space-y-3 font-mono text-[11px] uppercase font-bold text-zinc-400">
-              <div className="flex justify-between items-center">
-                <span className="text-zinc-500">Last Coupon</span>
-                <span className="text-zinc-200">{results.lastCouponDate}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-zinc-500">Next Coupon</span>
-                <span className="text-zinc-200">{results.nextCouponDate}</span>
-              </div>
-              <div className="h-px bg-white/5 my-1"></div>
-              <div className="flex justify-between items-center">
-                <span className="text-cyan-500/70">Days Accrued</span>
-                <span className="text-cyan-400 text-xl font-black">{results.daysAccrued}</span>
-              </div>
-            </div>
-          </section>
         </div>
 
-        <div className="lg:col-span-8 space-y-6 md:space-y-8">
-          <section className="bg-zinc-900/60 border border-white/5 rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-10 backdrop-blur-xl shadow-2xl h-full flex flex-col relative overflow-hidden">
+        {/* PRICING OUTPUT: Order 2 on mobile, Order 3 (right side) on desktop */}
+        <div className="lg:col-span-8 order-2 lg:order-3 lg:row-span-2 h-full flex flex-col">
+          <section className="bg-zinc-900/60 border border-white/5 rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-10 backdrop-blur-xl shadow-2xl flex-grow flex flex-col relative overflow-hidden">
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-violet-600/5 blur-[100px] rounded-full -mb-32 -mr-32"></div>
             
             <div className="flex items-center gap-3 text-zinc-400 mb-8 md:mb-10">
@@ -248,7 +228,7 @@ const App: React.FC = () => {
               <span className="text-xs font-black uppercase tracking-[0.3em] text-zinc-500">Pricing Output</span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 flex-grow">
               <div className="md:col-span-8 space-y-8 md:space-y-10">
                 <div className="group transition-transform active:scale-[0.99]">
                   <FormLabel label="Principal Amount" icon={<DollarSign size={12} />} />
@@ -325,6 +305,31 @@ const App: React.FC = () => {
                 <p className="text-xs md:text-sm font-black text-cyan-500 mono">{activeBond.frequency === 4 ? 'QUARTERLY' : 'SEMIANNUAL'}</p>
               </div>
             </section>
+          </section>
+        </div>
+
+        {/* ACCRUAL MATRIX: Order 3 on mobile, Order 2 (below inputs) on desktop */}
+        <div className="lg:col-span-4 order-3 lg:order-2 flex flex-col gap-6">
+          <section className="bg-cyan-950/20 border border-cyan-500/20 rounded-3xl p-6 backdrop-blur-md">
+            <h2 className="text-[10px] font-black text-cyan-400 flex items-center gap-2 uppercase tracking-[0.25em] mb-4">
+              <Activity size={12} />
+              Accrual Matrix
+            </h2>
+            <div className="space-y-3 font-mono text-[11px] uppercase font-bold text-zinc-400">
+              <div className="flex justify-between items-center">
+                <span className="text-zinc-500">Last Coupon</span>
+                <span className="text-zinc-200">{results.lastCouponDate}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-zinc-500">Next Coupon</span>
+                <span className="text-zinc-200">{results.nextCouponDate}</span>
+              </div>
+              <div className="h-px bg-white/5 my-1"></div>
+              <div className="flex justify-between items-center">
+                <span className="text-cyan-500/70">Days Accrued</span>
+                <span className="text-cyan-400 text-xl font-black">{results.daysAccrued}</span>
+              </div>
+            </div>
           </section>
         </div>
       </main>
