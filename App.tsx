@@ -18,12 +18,12 @@ import {
 } from 'lucide-react';
 
 const App: React.FC = () => {
-  // Parity State: Angola 2032, FV 400k, Price 92.22, Date 2024-04-02
-  const [selectedBondId, setSelectedBondId] = useState<string>(BONDS[0].id); 
-  const [settlementDate, setSettlementDate] = useState<string>("2024-04-02");
-  const [faceValueStr, setFaceValueStr] = useState<string>("400,000"); 
-  const [cleanPriceStr, setCleanPriceStr] = useState<string>("92.22"); 
-  const [yieldStr, setYieldStr] = useState<string>("10.15"); 
+  // Loading parity case: Nigeria 2046, FV $1M, Price 99.37, Date 2025-02-06
+  const [selectedBondId, setSelectedBondId] = useState<string>('NG-2046'); 
+  const [settlementDate, setSettlementDate] = useState<string>("2025-02-06");
+  const [faceValueStr, setFaceValueStr] = useState<string>("1,000,000"); 
+  const [cleanPriceStr, setCleanPriceStr] = useState<string>("99.37"); 
+  const [yieldStr, setYieldStr] = useState<string>("9.200782"); 
   const [lastSource, setLastSource] = useState<InputSource>('price');
 
   const faceValue = useMemo(() => {

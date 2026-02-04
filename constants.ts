@@ -76,6 +76,15 @@ export const BONDS: Bond[] = [
     currency: 'USD'
   },
   {
+    id: 'NG-2046',
+    name: 'NIGERIA 9.1297% 01/13/46',
+    couponRate: 9.1297,
+    maturityDate: '2046-11-13',
+    displayMaturity: '2046-01-13',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
     id: 'NG-2047',
     name: 'NIGERIA 7.625% 11/28/47',
     couponRate: 7.625,
