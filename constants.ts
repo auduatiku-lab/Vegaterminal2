@@ -1,4 +1,3 @@
-
 import { Bond } from './types';
 
 export const BONDS: Bond[] = [
@@ -7,6 +6,30 @@ export const BONDS: Bond[] = [
     name: 'ANGOLA 8.750% 03/14/32',
     couponRate: 8.75,
     maturityDate: '2032-03-14',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'NG-2027-NOV',
+    name: 'NIGERIA 6.500% 11/28/27',
+    couponRate: 6.5,
+    maturityDate: '2027-11-28',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'NG-2028-SEP',
+    name: 'NIGERIA 6.125% 09/28/28',
+    couponRate: 6.125,
+    maturityDate: '2028-09-28',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'NG-2029-MAR',
+    name: 'NIGERIA 8.375% 03/24/29',
+    couponRate: 8.375,
+    maturityDate: '2029-03-24',
     frequency: 2,
     currency: 'USD'
   },
