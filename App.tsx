@@ -294,10 +294,10 @@ const App: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 flex-grow">
-              <div className="md:col-span-8 space-y-8 md:space-y-10">
+              <div className="md:col-span-9 lg:col-span-10 space-y-8 md:space-y-10">
                 <div className="group transition-transform active:scale-[0.99]">
                   <FormLabel label="Principal Amount" icon={<DollarSign size={12} />} />
-                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono text-white tracking-tighter break-words overflow-hidden">
+                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono text-white tracking-tighter whitespace-nowrap overflow-visible">
                     <span className="text-zinc-500 text-xl md:text-2xl lg:text-3xl font-medium mr-1">$</span>
                     {formatCurrency(results.principalAmount)}
                   </div>
@@ -308,7 +308,7 @@ const App: React.FC = () => {
 
                 <div className="group transition-transform active:scale-[0.99]">
                   <FormLabel label={`Accrued Interest (${results.daysAccrued}d)`} />
-                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black mono text-zinc-300 tracking-tighter break-words overflow-hidden">
+                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black mono text-zinc-300 tracking-tighter whitespace-nowrap overflow-visible">
                     <span className="text-zinc-500 text-lg md:text-xl lg:text-2xl font-medium mr-1">$</span>
                     {formatCurrency(results.accruedAmount)}
                   </div>
@@ -321,7 +321,7 @@ const App: React.FC = () => {
                     </div>
                     <div className="relative z-10">
                       <FormLabel label="Net Settlement (All-in)" />
-                      <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-500 mb-4 tracking-tighter break-words overflow-hidden">
+                      <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-500 mb-4 tracking-tighter whitespace-nowrap overflow-visible">
                         ${formatCurrency(results.totalConsideration)}
                       </div>
                       <p className="text-[10px] text-zinc-500 font-bold leading-relaxed max-w-xs uppercase tracking-wider italic">
@@ -332,7 +332,7 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              <div className="md:col-span-4 hidden md:flex flex-col justify-center border-l border-white/5 pl-8 lg:pl-12">
+              <div className="md:col-span-3 lg:col-span-2 hidden md:flex flex-col justify-center border-l border-white/5 pl-8 lg:pl-12">
                  <div className="space-y-6">
                     <div className="flex items-center gap-4 text-zinc-500">
                        <Activity size={24} className="text-cyan-500 opacity-40" />
