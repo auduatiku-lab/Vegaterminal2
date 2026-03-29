@@ -18,12 +18,12 @@ import {
 } from 'lucide-react';
 
 const App: React.FC = () => {
-  // Loading parity case: Nigeria 2046, FV $1M, Price 99.37, Date 2025-02-06
-  const [selectedBondId, setSelectedBondId] = useState<string>('NG-2036'); 
+  // Loading parity case: Angola 2035, FV $482,015.00, Price 96.75, Date 2026-03-31
+  const [selectedBondId, setSelectedBondId] = useState<string>('AO-2035'); 
   const [settlementDate, setSettlementDate] = useState<string>("2026-03-31");
   const [faceValueStr, setFaceValueStr] = useState<string>("482,015.00"); 
   const [cleanPriceStr, setCleanPriceStr] = useState<string>("96.75"); 
-  const [yieldStr, setYieldStr] = useState<string>("9.12"); 
+  const [yieldStr, setYieldStr] = useState<string>("9.875"); 
   const [lastSource, setLastSource] = useState<InputSource>('price');
 
   const faceValue = useMemo(() => {
@@ -51,18 +51,25 @@ const App: React.FC = () => {
     if (lastSource === 'price') {
       const manualPrice = parseFloat(cleanPriceStr) || 0;
       const principal = (manualPrice / 100) * faceValue;
-      const roundedPrincipal = Math.round(principal * 100) / 100;
-      const total = roundedPrincipal + baseResults.accruedAmount;
+      // Use unrounded principal and accrued amount to calculate total consideration
+      // to match Bloomberg's precision (Total = Round( (Price + AccruedPer100) * FV / 100 ))
+      const total = principal + baseResults.accruedAmount;
       
       return {
         ...baseResults,
         cleanPrice: manualPrice,
-        principalAmount: roundedPrincipal,
+        principalAmount: Math.round(principal * 100) / 100,
+        accruedAmount: Math.round(baseResults.accruedAmount * 100) / 100,
         totalConsideration: Math.round(total * 100) / 100
       };
     }
     
-    return baseResults;
+    return {
+      ...baseResults,
+      principalAmount: Math.round(baseResults.principalAmount * 100) / 100,
+      accruedAmount: Math.round(baseResults.accruedAmount * 100) / 100,
+      totalConsideration: Math.round(baseResults.totalConsideration * 100) / 100
+    };
   }, [yieldStr, cleanPriceStr, activeBond, settlementDate, faceValue, lastSource]);
 
   const handlePriceChange = (val: string) => {
@@ -160,7 +167,7 @@ const App: React.FC = () => {
         
         {/* 1. PARAMETERS CARD */}
         {/* Mobile: Top (order-1) | Desktop: Left Column Row 1 */}
-        <div className="md:col-span-6 lg:col-span-5 md:col-start-1 md:row-start-1 order-1 flex flex-col gap-6">
+        <div className="md:col-span-6 lg:col-span-6 md:col-start-1 md:row-start-1 order-1 flex flex-col gap-6">
           <section className="bg-zinc-900/60 border border-white/5 rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 blur-[60px] rounded-full -mr-16 -mt-16"></div>
             
@@ -257,7 +264,7 @@ const App: React.FC = () => {
 
         {/* 2. PRICING OUTPUT CARD */}
         {/* Mobile: Second (order-2) | Desktop: Right Column (col-start-7), Spanning Rows 1 & 2 */}
-        <div className="md:col-span-6 lg:col-span-7 md:col-start-7 lg:col-start-6 md:row-start-1 md:row-span-2 order-2 h-full flex flex-col">
+        <div className="md:col-span-6 lg:col-span-6 md:col-start-7 lg:col-start-7 md:row-start-1 md:row-span-2 order-2 h-full flex flex-col">
           <section className="bg-zinc-900/60 border border-white/5 rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-10 backdrop-blur-xl shadow-2xl flex-grow flex flex-col relative overflow-hidden">
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-violet-600/5 blur-[100px] rounded-full -mb-32 -mr-32"></div>
             
@@ -348,7 +355,7 @@ const App: React.FC = () => {
 
         {/* 3. ACCRUAL MATRIX CARD */}
         {/* Mobile: Bottom (order-3) | Desktop: Left Column Row 2 (md:col-start-1 md:row-start-2) */}
-        <div className="md:col-span-6 lg:col-span-5 md:col-start-1 md:row-start-2 order-3 flex flex-col gap-6">
+        <div className="md:col-span-6 lg:col-span-6 md:col-start-1 md:row-start-2 order-3 flex flex-col gap-6">
           <section className="bg-cyan-950/20 border border-cyan-500/20 rounded-3xl p-6 backdrop-blur-md">
             <h2 className="text-[10px] font-black text-cyan-400 flex items-center gap-2 uppercase tracking-[0.25em] mb-4">
               <Activity size={12} />

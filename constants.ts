@@ -27,8 +27,8 @@ export const BONDS: Bond[] = [
   },
   {
     id: 'AO-2035',
-    name: 'ANGOLA 9.375% 10/15/35',
-    couponRate: 9.375,
+    name: 'ANGOLA 9.875% 10/15/35',
+    couponRate: 9.875,
     maturityDate: '2035-10-15',
     frequency: 2,
     currency: 'USD'

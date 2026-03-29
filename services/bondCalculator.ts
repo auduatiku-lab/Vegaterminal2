@@ -79,6 +79,9 @@ export function calculateBondPrice(
   
   // Accrued Interest per 100 par
   const aiPer100 = (cp / freq) * (daysAccrued / daysInPeriod);
+  
+  // BBG often rounds AI per 100 to 6 decimal places before amount calculation
+  const aiPer100Rounded = Math.round(aiPer100 * 1000000) / 1000000;
 
   // Calculate N (number of coupons remaining)
   const totalMonthsRemaining = (mat.getFullYear() * 12 + mat.getMonth()) - (nextC.getFullYear() * 12 + nextC.getMonth());
@@ -89,26 +92,22 @@ export function calculateBondPrice(
   const v = 1 / (1 + r);
   
   // Dirty Price calculation using SIA formula
-  let dirtyPrice = (100 / Math.pow(1 + r, n - 1 + w));
-  // Add Redemption
-  // Add Coupons
   let couponSum = 0;
   for (let i = 1; i <= n; i++) {
     couponSum += (cp / freq) / Math.pow(1 + r, i - 1 + w);
   }
-  dirtyPrice = (100 / Math.pow(1 + r, n - 1 + w)) + couponSum;
+  const dirtyPrice = (100 / Math.pow(1 + r, n - 1 + w)) + couponSum;
+  const cleanPrice = dirtyPrice - aiPer100Rounded;
 
-  const cleanPrice = dirtyPrice - aiPer100;
-
-  // Final money amounts rounded to 2 decimal places as per bank standards
-  const principalAmount = Math.round(((cleanPrice / 100) * faceValue) * 100) / 100;
-  const accruedAmount = Math.round(((aiPer100 / 100) * faceValue) * 100) / 100;
-  const totalConsideration = Math.round((principalAmount + accruedAmount) * 100) / 100;
+  // Use higher precision for internal amount calculations to avoid compounding rounding errors
+  const principalAmount = (cleanPrice / 100) * faceValue;
+  const accruedAmount = (aiPer100Rounded / 100) * faceValue;
+  const totalConsideration = principalAmount + accruedAmount;
 
   return {
     dirtyPrice,
     cleanPrice,
-    accruedInterest: aiPer100,
+    accruedInterest: aiPer100Rounded,
     daysAccrued,
     principalAmount,
     accruedAmount,
