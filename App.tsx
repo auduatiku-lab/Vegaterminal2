@@ -283,8 +283,8 @@ const App: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 flex-grow">
-              <div className="md:col-span-12 space-y-8 md:space-y-10">
-                <div className="group transition-transform active:scale-[0.99]">
+              <div className="md:col-span-12">
+                <div className="group transition-transform active:scale-[0.99] mb-8 md:mb-10">
                   <FormLabel label="Principal Amount" icon={<DollarSign size={12} />} />
                   <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono text-white tracking-tighter whitespace-nowrap overflow-visible">
                     <span className="text-zinc-500 text-xl md:text-2xl lg:text-3xl font-medium mr-1">$</span>
@@ -300,7 +300,7 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="pt-2 md:pt-4">
+                <div className="mt-[15px] md:mt-[36px]">
                   <div className="bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 border border-white/10 rounded-[2rem] p-6 md:p-8 relative overflow-hidden group shadow-2xl transition-all hover:scale-[1.01] hover:shadow-violet-500/10 active:scale-[0.98]">
                     <div className="absolute top-0 right-0 p-4 opacity-5 md:opacity-10 group-hover:opacity-20 transition-opacity">
                       <Zap size={60} className="text-violet-500" />
