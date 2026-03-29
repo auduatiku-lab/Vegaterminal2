@@ -31,9 +31,18 @@ const App: React.FC = () => {
     return isNaN(n) ? 0 : n;
   }, [faceValueStr]);
 
+  const availableBonds = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return BONDS.filter(bond => {
+      const maturity = new Date(bond.maturityDate);
+      return maturity >= today;
+    });
+  }, []);
+
   const activeBond = useMemo(() => 
-    BONDS.find(b => b.id === selectedBondId) || BONDS[0]
-  , [selectedBondId]);
+    availableBonds.find(b => b.id === selectedBondId) || availableBonds[0] || BONDS[0]
+  , [selectedBondId, availableBonds]);
 
   const results: CalculationResult = useMemo(() => {
     const ytm = parseFloat(yieldStr) || 0;
@@ -171,7 +180,7 @@ const App: React.FC = () => {
                     onChange={(e) => setSelectedBondId(e.target.value)}
                     className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 px-4 text-white font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-pointer appearance-none pr-10"
                   >
-                    {BONDS.map(bond => (
+                    {availableBonds.map(bond => (
                       <option key={bond.id} value={bond.id} className="bg-zinc-950">{bond.name}</option>
                     ))}
                   </select>
