@@ -43,9 +43,9 @@ export const BONDS: Bond[] = [
   },
   {
     id: 'AO-2048',
-    name: 'ANGOLA 9.375% 05/08/48',
+    name: 'ANGOLA 9.375% 06/15/48',
     couponRate: 9.375,
-    maturityDate: '2048-05-08',
+    maturityDate: '2048-06-15',
     frequency: 2,
     currency: 'USD'
   },
