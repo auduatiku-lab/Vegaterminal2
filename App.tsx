@@ -290,9 +290,6 @@ const App: React.FC = () => {
                     <span className="text-zinc-500 text-xl md:text-2xl lg:text-3xl font-medium mr-1">$</span>
                     {formatCurrency(results.principalAmount)}
                   </div>
-                  <div className="text-[10px] text-cyan-400/70 mt-2 uppercase font-black tracking-widest bg-cyan-500/10 inline-block px-2 py-0.5 rounded border border-cyan-500/20">
-                    @{results.cleanPrice.toFixed(4)}% SIA
-                  </div>
                 </div>
 
                 <div className="group transition-transform active:scale-[0.99]">
