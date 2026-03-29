@@ -294,7 +294,7 @@ const App: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 flex-grow">
-              <div className="md:col-span-9 lg:col-span-10 space-y-8 md:space-y-10">
+              <div className="md:col-span-12 space-y-8 md:space-y-10">
                 <div className="group transition-transform active:scale-[0.99]">
                   <FormLabel label="Principal Amount" icon={<DollarSign size={12} />} />
                   <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono text-white tracking-tighter whitespace-nowrap overflow-visible">
@@ -330,25 +330,6 @@ const App: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div className="md:col-span-3 lg:col-span-2 hidden md:flex flex-col justify-center border-l border-white/5 pl-8 lg:pl-12">
-                 <div className="space-y-6">
-                    <div className="flex items-center gap-4 text-zinc-500">
-                       <Activity size={24} className="text-cyan-500 opacity-40" />
-                       <div>
-                         <p className="text-[9px] font-black uppercase tracking-widest text-zinc-600">Analytics Status</p>
-                         <p className="text-[11px] font-bold text-zinc-400">ENGINE ACTIVE</p>
-                       </div>
-                    </div>
-                    <div className="flex items-center gap-4 text-zinc-500">
-                       <Globe size={24} className="text-blue-500 opacity-40" />
-                       <div>
-                         <p className="text-[9px] font-black uppercase tracking-widest text-zinc-600">Region Coverage</p>
-                         <p className="text-[11px] font-bold text-zinc-400">EMEA SOVEREIGN</p>
-                       </div>
-                    </div>
-                 </div>
               </div>
             </div>
 
