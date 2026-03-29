@@ -14,9 +14,7 @@ import {
   Zap,
   TrendingUp,
   Cpu,
-  ChevronDown,
-  Search,
-  X
+  ChevronDown
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -27,21 +25,6 @@ const App: React.FC = () => {
   const [cleanPriceStr, setCleanPriceStr] = useState<string>("96.75"); 
   const [yieldStr, setYieldStr] = useState<string>("9.12"); 
   const [lastSource, setLastSource] = useState<InputSource>('price');
-
-  // Searchable Dropdown State
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = React.useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   const faceValue = useMemo(() => {
     const n = parseFloat(faceValueStr.replace(/,/g, ''));
@@ -56,15 +39,6 @@ const App: React.FC = () => {
       return maturity >= today;
     });
   }, []);
-
-  const filteredBonds = useMemo(() => {
-    if (!searchTerm) return availableBonds;
-    const lowerSearch = searchTerm.toLowerCase();
-    return availableBonds.filter(bond => 
-      bond.name.toLowerCase().includes(lowerSearch) || 
-      bond.id.toLowerCase().includes(lowerSearch)
-    );
-  }, [availableBonds, searchTerm]);
 
   const activeBond = useMemo(() => 
     availableBonds.find(b => b.id === selectedBondId) || availableBonds[0] || BONDS[0]
@@ -182,11 +156,11 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 w-full max-w-7xl items-start">
+      <main className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 w-full max-w-7xl items-start">
         
         {/* 1. PARAMETERS CARD */}
         {/* Mobile: Top (order-1) | Desktop: Left Column Row 1 */}
-        <div className="lg:col-span-4 lg:col-start-1 lg:row-start-1 order-1 flex flex-col gap-6">
+        <div className="md:col-span-6 lg:col-span-5 md:col-start-1 md:row-start-1 order-1 flex flex-col gap-6">
           <section className="bg-zinc-900/60 border border-white/5 rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 blur-[60px] rounded-full -mr-16 -mt-16"></div>
             
@@ -198,69 +172,30 @@ const App: React.FC = () => {
             </div>
 
             <div className="space-y-5 md:space-y-6">
-              <div className="relative group" ref={dropdownRef}>
+              <div className="relative group">
                 <FormLabel label="Instrument" icon={<Zap size={12} />} />
                 <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 px-4 text-white font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm flex items-center justify-between text-left"
+                  <select 
+                    value={selectedBondId}
+                    onChange={(e) => setSelectedBondId(e.target.value)}
+                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 px-4 text-white font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-pointer appearance-none pr-10"
                   >
-                    <span className="truncate">{activeBond.name}</span>
-                    <ChevronDown className={`text-zinc-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} size={16} />
-                  </button>
-
-                  {isDropdownOpen && (
-                    <div className="absolute z-50 mt-2 w-full bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden animate-in fade-in zoom-in duration-200">
-                      <div className="p-3 border-b border-white/5">
-                        <div className="relative">
-                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" size={14} />
-                          <input
-                            autoFocus
-                            type="text"
-                            placeholder="Search Eurobonds..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full bg-zinc-950 border border-white/10 rounded-lg py-2 pl-9 pr-8 text-xs text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50"
-                          />
-                          {searchTerm && (
-                            <button 
-                              onClick={() => setSearchTerm('')}
-                              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white"
-                            >
-                              <X size={14} />
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                      <div className="max-h-64 overflow-y-auto custom-scrollbar">
-                        {filteredBonds.length > 0 ? (
-                          filteredBonds.map(bond => (
-                            <button
-                              key={bond.id}
-                              onClick={() => {
-                                setSelectedBondId(bond.id);
-                                setIsDropdownOpen(false);
-                                setSearchTerm('');
-                              }}
-                              className={`w-full text-left px-4 py-3 text-xs font-bold transition-colors flex flex-col gap-0.5 ${
-                                selectedBondId === bond.id 
-                                  ? 'bg-cyan-500/10 text-cyan-400' 
-                                  : 'text-zinc-400 hover:bg-white/5 hover:text-white'
-                              }`}
-                            >
-                              <span>{bond.name}</span>
-                              <span className="text-[9px] opacity-50 uppercase tracking-widest">{bond.id}</span>
-                            </button>
-                          ))
-                        ) : (
-                          <div className="px-4 py-6 text-center text-zinc-600 text-xs font-bold uppercase tracking-widest">
-                            No instruments found
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
+                    {availableBonds.map(bond => (
+                      <option key={bond.id} value={bond.id} className="bg-zinc-950">{bond.name}</option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" size={16} />
+                </div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <span className="text-[9px] font-black bg-zinc-800/50 text-zinc-400 px-2 py-1 rounded border border-white/5 tracking-widest uppercase">
+                    {activeBond.currency}
+                  </span>
+                  <span className="text-[9px] font-black bg-zinc-800/50 text-cyan-500/70 px-2 py-1 rounded border border-cyan-500/10 tracking-widest uppercase">
+                    CPN: {activeBond.couponRate.toFixed(4)}%
+                  </span>
+                  <span className="text-[9px] font-black bg-zinc-800/50 text-zinc-400 px-2 py-1 rounded border border-white/5 tracking-widest uppercase">
+                    {activeBond.frequency === 2 ? 'Semi-Annual' : 'Quarterly'}
+                  </span>
                 </div>
               </div>
 
@@ -321,8 +256,8 @@ const App: React.FC = () => {
         </div>
 
         {/* 2. PRICING OUTPUT CARD */}
-        {/* Mobile: Second (order-2) | Desktop: Right Column (col-start-5), Spanning Rows 1 & 2 */}
-        <div className="lg:col-span-8 lg:col-start-5 lg:row-start-1 lg:row-span-2 order-2 h-full flex flex-col">
+        {/* Mobile: Second (order-2) | Desktop: Right Column (col-start-7), Spanning Rows 1 & 2 */}
+        <div className="md:col-span-6 lg:col-span-7 md:col-start-7 lg:col-start-6 md:row-start-1 md:row-span-2 order-2 h-full flex flex-col">
           <section className="bg-zinc-900/60 border border-white/5 rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-10 backdrop-blur-xl shadow-2xl flex-grow flex flex-col relative overflow-hidden">
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-violet-600/5 blur-[100px] rounded-full -mb-32 -mr-32"></div>
             
@@ -412,8 +347,8 @@ const App: React.FC = () => {
         </div>
 
         {/* 3. ACCRUAL MATRIX CARD */}
-        {/* Mobile: Bottom (order-3) | Desktop: Left Column Row 2 (lg:col-start-1 lg:row-start-2) */}
-        <div className="lg:col-span-4 lg:col-start-1 lg:row-start-2 order-3 flex flex-col gap-6">
+        {/* Mobile: Bottom (order-3) | Desktop: Left Column Row 2 (md:col-start-1 md:row-start-2) */}
+        <div className="md:col-span-6 lg:col-span-5 md:col-start-1 md:row-start-2 order-3 flex flex-col gap-6">
           <section className="bg-cyan-950/20 border border-cyan-500/20 rounded-3xl p-6 backdrop-blur-md">
             <h2 className="text-[10px] font-black text-cyan-400 flex items-center gap-2 uppercase tracking-[0.25em] mb-4">
               <Activity size={12} />
