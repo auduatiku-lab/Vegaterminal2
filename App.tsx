@@ -213,17 +213,6 @@ const App: React.FC = () => {
                   </select>
                   <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" size={16} />
                 </div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <span className="text-[9px] font-black bg-zinc-800/50 text-zinc-400 px-2 py-1 rounded border border-white/5 tracking-widest uppercase">
-                    {activeBond.currency}
-                  </span>
-                  <span className="text-[9px] font-black bg-zinc-800/50 text-cyan-500/70 px-2 py-1 rounded border border-cyan-500/10 tracking-widest uppercase">
-                    CPN: {activeBond.couponRate.toFixed(4)}%
-                  </span>
-                  <span className="text-[9px] font-black bg-zinc-800/50 text-zinc-400 px-2 py-1 rounded border border-white/5 tracking-widest uppercase">
-                    {activeBond.frequency === 2 ? 'Semi-Annual' : 'Quarterly'}
-                  </span>
-                </div>
               </div>
 
               <div className="relative">
