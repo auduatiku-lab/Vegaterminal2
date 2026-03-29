@@ -154,23 +154,23 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 p-4 md:p-8 lg:p-10 flex flex-col items-center selection:bg-cyan-500/30 touch-manipulation">
       {/* Header hidden on Mobile/Tablet, visible only on Desktop (lg) */}
-      <header className="hidden lg:flex w-full max-w-7xl flex-row items-center justify-between mb-12 gap-6">
+      <header className="hidden lg:flex w-full max-w-7xl flex-row items-center justify-between mb-[30px] gap-6">
         <div className="flex items-center gap-4">
-          <div className="bg-gradient-to-br from-cyan-500 to-blue-600 p-3 rounded-2xl shadow-xl shadow-cyan-500/10">
-            <Calculator className="text-white" size={28} />
+          <div className="bg-gradient-to-br from-cyan-500 to-blue-600 p-2 rounded-xl shadow-xl shadow-cyan-500/10">
+            <Calculator className="text-white" size={24} />
           </div>
           <div>
-            <h1 className="text-2xl font-black tracking-tighter text-white flex items-center gap-2">
+            <h1 className="text-xl font-black tracking-tighter text-white flex items-center gap-2">
               VEGA <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">TERMINAL</span>
             </h1>
-            <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-bold uppercase tracking-[0.3em]">
+            <div className="flex items-center gap-2 text-[9px] text-zinc-500 font-bold uppercase tracking-[0.3em]">
               <Cpu size={10} className="text-cyan-600" />
               SIA Engine v4.2.0
             </div>
           </div>
         </div>
         
-        <div className="flex items-center gap-8 bg-zinc-900/50 px-6 py-3 rounded-2xl border border-white/5 backdrop-blur-md">
+        <div className="flex items-center gap-8 bg-zinc-900/50 px-6 py-2 rounded-xl border border-white/5 backdrop-blur-md">
           <div className="flex items-center gap-2 text-xs font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">
             <Globe size={14} className="text-cyan-400" />
             ICMA 30/360
