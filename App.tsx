@@ -19,11 +19,11 @@ import {
 
 const App: React.FC = () => {
   // Loading parity case: Nigeria 2046, FV $1M, Price 99.37, Date 2025-02-06
-  const [selectedBondId, setSelectedBondId] = useState<string>('NG-2051'); 
+  const [selectedBondId, setSelectedBondId] = useState<string>('NG-2036'); 
   const [settlementDate, setSettlementDate] = useState<string>("2026-03-31");
-  const [faceValueStr, setFaceValueStr] = useState<string>("500,000"); 
+  const [faceValueStr, setFaceValueStr] = useState<string>("482,015.00"); 
   const [cleanPriceStr, setCleanPriceStr] = useState<string>("96.75"); 
-  const [yieldStr, setYieldStr] = useState<string>("8.55"); 
+  const [yieldStr, setYieldStr] = useState<string>("9.12"); 
   const [lastSource, setLastSource] = useState<InputSource>('price');
 
   const faceValue = useMemo(() => {
@@ -81,9 +81,23 @@ const App: React.FC = () => {
   };
 
   const handleFaceValueChange = (val: string) => {
-    const sanitized = val.replace(/[^0-9]/g, '');
-    const numeric = parseInt(sanitized || "0", 10);
-    setFaceValueStr(numeric.toLocaleString());
+    // Allow digits and one decimal point
+    const sanitized = val.replace(/[^0-9.]/g, '');
+    // Handle multiple decimal points by keeping only the first one
+    const parts = sanitized.split('.');
+    const clean = parts[0] + (parts.length > 1 ? '.' + parts[1] : '');
+    
+    // If it's just a number, format it nicely with commas, but preserve the decimal part
+    if (clean && !clean.endsWith('.')) {
+      const num = parseFloat(clean);
+      if (!isNaN(num)) {
+        const formattedInt = Math.floor(num).toLocaleString();
+        const decimalPart = clean.includes('.') ? '.' + clean.split('.')[1] : '';
+        setFaceValueStr(formattedInt + decimalPart);
+        return;
+      }
+    }
+    setFaceValueStr(clean);
   };
 
   const formatCurrency = (val: number) => {
