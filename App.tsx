@@ -14,7 +14,9 @@ import {
   Zap,
   TrendingUp,
   Cpu,
-  ChevronDown
+  ChevronDown,
+  Search,
+  X
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -25,6 +27,21 @@ const App: React.FC = () => {
   const [cleanPriceStr, setCleanPriceStr] = useState<string>("96.75"); 
   const [yieldStr, setYieldStr] = useState<string>("9.12"); 
   const [lastSource, setLastSource] = useState<InputSource>('price');
+
+  // Searchable Dropdown State
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const faceValue = useMemo(() => {
     const n = parseFloat(faceValueStr.replace(/,/g, ''));
@@ -39,6 +56,15 @@ const App: React.FC = () => {
       return maturity >= today;
     });
   }, []);
+
+  const filteredBonds = useMemo(() => {
+    if (!searchTerm) return availableBonds;
+    const lowerSearch = searchTerm.toLowerCase();
+    return availableBonds.filter(bond => 
+      bond.name.toLowerCase().includes(lowerSearch) || 
+      bond.id.toLowerCase().includes(lowerSearch)
+    );
+  }, [availableBonds, searchTerm]);
 
   const activeBond = useMemo(() => 
     availableBonds.find(b => b.id === selectedBondId) || availableBonds[0] || BONDS[0]
@@ -172,19 +198,69 @@ const App: React.FC = () => {
             </div>
 
             <div className="space-y-5 md:space-y-6">
-              <div className="relative group">
+              <div className="relative group" ref={dropdownRef}>
                 <FormLabel label="Instrument" icon={<Zap size={12} />} />
                 <div className="relative">
-                  <select 
-                    value={selectedBondId}
-                    onChange={(e) => setSelectedBondId(e.target.value)}
-                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 px-4 text-white font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-pointer appearance-none pr-10"
+                  <button
+                    type="button"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 px-4 text-white font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm flex items-center justify-between text-left"
                   >
-                    {availableBonds.map(bond => (
-                      <option key={bond.id} value={bond.id} className="bg-zinc-950">{bond.name}</option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" size={16} />
+                    <span className="truncate">{activeBond.name}</span>
+                    <ChevronDown className={`text-zinc-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} size={16} />
+                  </button>
+
+                  {isDropdownOpen && (
+                    <div className="absolute z-50 mt-2 w-full bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden animate-in fade-in zoom-in duration-200">
+                      <div className="p-3 border-b border-white/5">
+                        <div className="relative">
+                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" size={14} />
+                          <input
+                            autoFocus
+                            type="text"
+                            placeholder="Search Eurobonds..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full bg-zinc-950 border border-white/10 rounded-lg py-2 pl-9 pr-8 text-xs text-white focus:outline-none focus:ring-1 focus:ring-cyan-500/50"
+                          />
+                          {searchTerm && (
+                            <button 
+                              onClick={() => setSearchTerm('')}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white"
+                            >
+                              <X size={14} />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                      <div className="max-h-64 overflow-y-auto custom-scrollbar">
+                        {filteredBonds.length > 0 ? (
+                          filteredBonds.map(bond => (
+                            <button
+                              key={bond.id}
+                              onClick={() => {
+                                setSelectedBondId(bond.id);
+                                setIsDropdownOpen(false);
+                                setSearchTerm('');
+                              }}
+                              className={`w-full text-left px-4 py-3 text-xs font-bold transition-colors flex flex-col gap-0.5 ${
+                                selectedBondId === bond.id 
+                                  ? 'bg-cyan-500/10 text-cyan-400' 
+                                  : 'text-zinc-400 hover:bg-white/5 hover:text-white'
+                              }`}
+                            >
+                              <span>{bond.name}</span>
+                              <span className="text-[9px] opacity-50 uppercase tracking-widest">{bond.id}</span>
+                            </button>
+                          ))
+                        ) : (
+                          <div className="px-4 py-6 text-center text-zinc-600 text-xs font-bold uppercase tracking-widest">
+                            No instruments found
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
