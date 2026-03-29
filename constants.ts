@@ -3,9 +3,9 @@ import { Bond } from './types';
 export const BONDS: Bond[] = [
   {
     id: 'AO-2031',
-    name: 'ANGOLA 9.244% 05/14/31',
+    name: 'ANGOLA 9.244% 01/15/31',
     couponRate: 9.244,
-    maturityDate: '2031-05-14',
+    maturityDate: '2031-01-15',
     frequency: 2,
     currency: 'USD'
   },
