@@ -11,16 +11,11 @@ export function getDays30360(start: Date, end: Date): number {
   let m2 = end.getMonth() + 1;
   let y2 = end.getFullYear();
 
-  // NASD Rule: If the investment begins on the last day of February, the first day is changed to 30.
-  const isFebLastDay = (m: number, d: number, y: number) => {
-    return m === 2 && d === new Date(y, 2, 0).getDate();
-  };
-
-  if (isFebLastDay(m1, d1, y1)) d1 = 30;
+  // 30E/360 (ICMA / Eurobond Basis)
+  // Rule: If D1 is 31, it is changed to 30.
+  // Rule: If D2 is 31, it is changed to 30.
   if (d1 === 31) d1 = 30;
-  
-  // Rule: If D2 is 31 and D1 is 30 or 31, D2 is changed to 30.
-  if (d2 === 31 && d1 >= 30) d2 = 30;
+  if (d2 === 31) d2 = 30;
 
   return (y2 - y1) * 360 + (m2 - m1) * 30 + (d2 - d1);
 }

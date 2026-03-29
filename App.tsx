@@ -19,11 +19,11 @@ import {
 
 const App: React.FC = () => {
   // Loading parity case: Nigeria 2046, FV $1M, Price 99.37, Date 2025-02-06
-  const [selectedBondId, setSelectedBondId] = useState<string>('NG-2046'); 
-  const [settlementDate, setSettlementDate] = useState<string>("2025-02-06");
-  const [faceValueStr, setFaceValueStr] = useState<string>("1,000,000"); 
-  const [cleanPriceStr, setCleanPriceStr] = useState<string>("99.37"); 
-  const [yieldStr, setYieldStr] = useState<string>("9.200782"); 
+  const [selectedBondId, setSelectedBondId] = useState<string>('NG-2051'); 
+  const [settlementDate, setSettlementDate] = useState<string>("2026-03-31");
+  const [faceValueStr, setFaceValueStr] = useState<string>("500,000"); 
+  const [cleanPriceStr, setCleanPriceStr] = useState<string>("96.75"); 
+  const [yieldStr, setYieldStr] = useState<string>("8.55"); 
   const [lastSource, setLastSource] = useState<InputSource>('price');
 
   const faceValue = useMemo(() => {
@@ -123,7 +123,7 @@ const App: React.FC = () => {
         <div className="flex items-center gap-8 bg-zinc-900/50 px-6 py-3 rounded-2xl border border-white/5 backdrop-blur-md">
           <div className="flex items-center gap-2 text-xs font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">
             <Globe size={14} className="text-cyan-400" />
-            NASD 30/360
+            ICMA 30/360
           </div>
           <div className="w-px h-4 bg-zinc-800"></div>
           <div className="flex items-center gap-2 text-xs font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap">

@@ -173,4 +173,4 @@ export const BONDS: Bond[] = [
   }
 ];
 
-export const DEFAULT_SETTLEMENT = '2024-04-02';
+export const DEFAULT_SETTLEMENT = '2026-03-31';
