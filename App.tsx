@@ -117,6 +117,25 @@ const App: React.FC = () => {
     setFaceValueStr(clean);
   };
 
+  // Re-calculate yield or price when bond, settlement, or face value changes
+  useEffect(() => {
+    if (lastSource === 'price') {
+      const numericPrice = parseFloat(cleanPriceStr);
+      if (!isNaN(numericPrice) && numericPrice > 0) {
+        const y = calculateYield(numericPrice, activeBond, settlementDate, faceValue);
+        if (!isNaN(y)) setYieldStr(y.toFixed(6));
+      }
+    } else {
+      const numericYield = parseFloat(yieldStr);
+      if (!isNaN(numericYield)) {
+        const res = calculateBondPrice(numericYield, activeBond, settlementDate, faceValue);
+        if (!isNaN(res.cleanPrice) && res.cleanPrice !== 0) {
+          setCleanPriceStr(res.cleanPrice.toFixed(4));
+        }
+      }
+    }
+  }, [selectedBondId, settlementDate, faceValue]);
+
   const formatCurrency = (val: number) => {
     if (val === undefined || val === null || isNaN(val)) return "0.00";
     const fixedVal = val.toFixed(2);
