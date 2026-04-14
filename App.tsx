@@ -200,7 +200,7 @@ const App: React.FC = () => {
 
             <div className="space-y-5 md:space-y-6">
               <div className="relative group">
-                <FormLabel label="Instrument" icon={<Zap size={12} />} />
+                <FormLabel label="Select Eurobond" icon={<Zap size={12} />} />
                 <div className="relative">
                   <select 
                     value={selectedBondId}
@@ -216,7 +216,7 @@ const App: React.FC = () => {
               </div>
 
               <div className="relative">
-                <FormLabel label="Nominal Value" icon={<TrendingUp size={12} />} />
+                <FormLabel label="Face Value" icon={<TrendingUp size={12} />} />
                 <div className="relative">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">
                     <DollarSign size={16} />
