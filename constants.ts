@@ -219,4 +219,4 @@ export const BONDS: Bond[] = [
   }
 ];
 
-export const DEFAULT_SETTLEMENT = '2026-03-31';
+export const DEFAULT_SETTLEMENT = new Date().toISOString().split('T')[0];

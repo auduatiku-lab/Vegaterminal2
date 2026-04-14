@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { Bond, CalculationResult, InputSource } from './types';
-import { BONDS } from './constants';
+import { BONDS, DEFAULT_SETTLEMENT } from './constants';
 import { calculateBondPrice, calculateYield } from './services/bondCalculator';
 import { 
   Calculator, 
@@ -18,10 +18,10 @@ import {
 } from 'lucide-react';
 
 const App: React.FC = () => {
-  // Loading parity case: Nigeria 2046, FV $482,015.00, Price 96.75, Date 2026-03-31
+  // Loading parity case: Nigeria 2046, FV $482,015.00, Price 96.75
   // BBG Consideration: 483,096.44 (Accrued: 16,746.93, 137 days)
   const [selectedBondId, setSelectedBondId] = useState<string>('NG-2046'); 
-  const [settlementDate, setSettlementDate] = useState<string>("2026-03-31");
+  const [settlementDate, setSettlementDate] = useState<string>(DEFAULT_SETTLEMENT);
   const [faceValueStr, setFaceValueStr] = useState<string>("482,015.00"); 
   const [cleanPriceStr, setCleanPriceStr] = useState<string>("96.75"); 
   const [yieldStr, setYieldStr] = useState<string>("9.48"); 
