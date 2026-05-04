@@ -7,6 +7,7 @@ export interface Bond {
   displayMaturity?: string; // For bonds where math anchor differs from legal maturity
   frequency: number; 
   currency: string;
+  dayCount?: '30E/360' | 'ACT/365' | 'ACT/360';
 }
 
 export interface CalculationResult {

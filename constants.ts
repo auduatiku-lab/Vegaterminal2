@@ -216,6 +216,15 @@ export const BONDS: Bond[] = [
     maturityDate: '2044-09-16',
     frequency: 2,
     currency: 'USD'
+  },
+  {
+    id: 'BJ-2032',
+    name: 'BENIN 4.875% 01/19/32',
+    couponRate: 4.875,
+    maturityDate: '2032-01-19',
+    frequency: 1,
+    dayCount: 'ACT/365',
+    currency: 'EUR'
   }
 ];
 

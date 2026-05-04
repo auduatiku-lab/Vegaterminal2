@@ -12,12 +12,16 @@ export function getDays30360(start: Date, end: Date): number {
   let y2 = end.getFullYear();
 
   // 30E/360 (ICMA / Eurobond Basis)
-  // Rule: If D1 is 31, it is changed to 30.
-  // Rule: If D2 is 31, it is changed to 30.
   if (d1 === 31) d1 = 30;
   if (d2 === 31) d2 = 30;
 
   return (y2 - y1) * 360 + (m2 - m1) * 30 + (d2 - d1);
+}
+
+export function getDaysACT(start: Date, end: Date): number {
+  if (isNaN(start.getTime()) || isNaN(end.getTime())) return 0;
+  const diffTime = Math.abs(end.getTime() - start.getTime());
+  return Math.round(diffTime / (1000 * 60 * 60 * 24));
 }
 
 function getCouponDates(settlement: Date, maturity: Date, frequency: number) {
@@ -30,9 +34,7 @@ function getCouponDates(settlement: Date, maturity: Date, frequency: number) {
   let prevC = new Date(maturity);
   let nextC = new Date(maturity);
 
-  // Safety: Bond math shouldn't exceed 100 years usually
   while (periods < 1200) {
-    // Robust month stepping to avoid JS Date overflow on 31st
     const checkDate = new Date(matYear, matMonth - (periods * monthsBetween), 1);
     const lastDay = new Date(matYear, matMonth - (periods * monthsBetween) + 1, 0).getDate();
     checkDate.setDate(Math.min(matDay, lastDay));
@@ -70,28 +72,43 @@ export function calculateBondPrice(
 
   const freq = bond.frequency || 2;
   const cp = bond.couponRate;
+  const dc = bond.dayCount || '30E/360';
   const r = (ytm / 100) / freq;
 
   const { prevC, nextC } = getCouponDates(set, mat, freq);
 
-  const daysAccrued = getDays30360(prevC, set);
-  const daysInPeriod = 360 / freq; 
+  let daysAccrued: number;
+  let daysInPeriod: number;
+
+  if (dc === 'ACT/365') {
+    daysAccrued = getDaysACT(prevC, set);
+    daysInPeriod = 365 / freq;
+  } else if (dc === 'ACT/360') {
+    daysAccrued = getDaysACT(prevC, set);
+    daysInPeriod = 360 / freq;
+  } else {
+    // Default 30E/360
+    daysAccrued = getDays30360(prevC, set);
+    daysInPeriod = 360 / freq; 
+  }
   
   // Accrued Interest per 100 par
   const aiPer100 = (cp / freq) * (daysAccrued / daysInPeriod);
-  
-  // BBG often rounds AI per 100 to 6 decimal places before amount calculation
   const aiPer100Rounded = Math.round(aiPer100 * 1000000) / 1000000;
 
-  // Calculate N (number of coupons remaining)
   const totalMonthsRemaining = (mat.getFullYear() * 12 + mat.getMonth()) - (nextC.getFullYear() * 12 + nextC.getMonth());
   const n = Math.max(0, Math.round(totalMonthsRemaining / (12 / freq))) + 1;
 
-  const daysToNext = getDays30360(set, nextC);
+  let daysToNext: number;
+  if (dc === 'ACT/365' || dc === 'ACT/360') {
+    daysToNext = getDaysACT(set, nextC);
+  } else {
+    daysToNext = getDays30360(set, nextC);
+  }
+
   const w = daysToNext / daysInPeriod;
   const v = 1 / (1 + r);
   
-  // Dirty Price calculation using SIA formula
   let couponSum = 0;
   for (let i = 1; i <= n; i++) {
     couponSum += (cp / freq) / Math.pow(1 + r, i - 1 + w);
@@ -99,19 +116,13 @@ export function calculateBondPrice(
   const dirtyPrice = (100 / Math.pow(1 + r, n - 1 + w)) + couponSum;
   const cleanPrice = dirtyPrice - aiPer100Rounded;
 
-  // Use higher precision for internal amount calculations to avoid compounding rounding errors
-  const principalAmount = (cleanPrice / 100) * faceValue;
-  const accruedAmount = (aiPer100Rounded / 100) * faceValue;
+  const principalAmount = Math.round(((cleanPrice / 100) * faceValue) * 100) / 100;
+  const accruedAmount = Math.round(((aiPer100Rounded / 100) * faceValue) * 100) / 100;
   const totalConsideration = principalAmount + accruedAmount;
 
   return {
-    dirtyPrice,
-    cleanPrice,
-    accruedInterest: aiPer100Rounded,
-    daysAccrued,
-    principalAmount,
-    accruedAmount,
-    totalConsideration,
+    dirtyPrice, cleanPrice, accruedInterest: aiPer100Rounded, daysAccrued,
+    principalAmount, accruedAmount, totalConsideration,
     lastCouponDate: prevC.toISOString().split('T')[0],
     nextCouponDate: nextC.toISOString().split('T')[0]
   };
