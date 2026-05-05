@@ -225,6 +225,15 @@ export const BONDS: Bond[] = [
     frequency: 1,
     dayCount: 'ACT/365',
     currency: 'EUR'
+  },
+  {
+    id: 'BJ-2035',
+    name: 'BENIN 4.95% 01/22/35',
+    couponRate: 4.95,
+    maturityDate: '2035-01-22',
+    frequency: 1,
+    dayCount: 'ACT/365',
+    currency: 'EUR'
   }
 ];
 
