@@ -64,7 +64,7 @@ export function calculateBondPrice(
   
   if (isNaN(set.getTime()) || isNaN(mat.getTime()) || isNaN(ytm) || isNaN(faceValue)) {
     return {
-      dirtyPrice: 0, cleanPrice: 0, accruedInterest: 0, daysAccrued: 0,
+      dirtyPrice: 0, cleanPrice: 0, accruedInterest: 0, accruedInterestRaw: 0, daysAccrued: 0,
       principalAmount: 0, accruedAmount: 0, totalConsideration: 0,
       lastCouponDate: '', nextCouponDate: ''
     };
@@ -116,12 +116,14 @@ export function calculateBondPrice(
   const dirtyPrice = (100 / Math.pow(1 + r, n - 1 + w)) + couponSum;
   const cleanPrice = dirtyPrice - aiPer100Rounded;
 
-  const principalAmount = Math.round(((cleanPrice / 100) * faceValue) * 100) / 100;
-  const accruedAmount = Math.round(((aiPer100Rounded / 100) * faceValue) * 100) / 100;
-  const totalConsideration = principalAmount + accruedAmount;
+  // Calculate Principal and Accrued separately then sum for Total Consideration
+  // Using unrounded AI for amount calculation as BBG often does
+  const principalAmount = Math.round((cleanPrice / 100 * faceValue) * 100 + 1e-9) / 100;
+  const accruedAmount = Math.round((aiPer100 * faceValue / 100) * 100 + 1e-9) / 100;
+  const totalConsideration = Math.round((principalAmount + accruedAmount) * 100 + 1e-9) / 100;
 
   return {
-    dirtyPrice, cleanPrice, accruedInterest: aiPer100Rounded, daysAccrued,
+    dirtyPrice, cleanPrice, accruedInterest: aiPer100Rounded, accruedInterestRaw: aiPer100, daysAccrued,
     principalAmount, accruedAmount, totalConsideration,
     lastCouponDate: prevC.toISOString().split('T')[0],
     nextCouponDate: nextC.toISOString().split('T')[0]

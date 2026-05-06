@@ -18,13 +18,13 @@ import {
 } from 'lucide-react';
 
 const App: React.FC = () => {
-  // Loading parity case: Benin 2032, FV $482,015.00, Price 96.75
-  // BBG Total: 473,238.03 (Accrued: 6,888.52, 107 days)
-  const [selectedBondId, setSelectedBondId] = useState<string>('BJ-2032'); 
-  const [settlementDate, setSettlementDate] = useState<string>("2026-05-06");
+  // Loading parity case: Benin 2038, FV $482,015.00, Price 96.73
+  // BBG Total: 475,205.74 (Accrued: 8,952.62, 84 days)
+  const [selectedBondId, setSelectedBondId] = useState<string>('BJ-2038'); 
+  const [settlementDate, setSettlementDate] = useState<string>("2026-05-07");
   const [faceValueStr, setFaceValueStr] = useState<string>("482,015.00"); 
-  const [cleanPriceStr, setCleanPriceStr] = useState<string>("96.75"); 
-  const [yieldStr, setYieldStr] = useState<string>("5.54"); 
+  const [cleanPriceStr, setCleanPriceStr] = useState<string>("96.73"); 
+  const [yieldStr, setYieldStr] = useState<string>("8.41"); 
   const [lastSource, setLastSource] = useState<InputSource>('price');
 
   const faceValue = useMemo(() => {
@@ -51,25 +51,26 @@ const App: React.FC = () => {
     
     if (lastSource === 'price') {
       const manualPrice = parseFloat(cleanPriceStr) || 0;
-      const principal = (manualPrice / 100) * faceValue;
-      // Use unrounded principal and accrued amount to calculate total consideration
-      // to match Bloomberg's precision (Total = Round( (Price + AccruedPer100) * FV / 100 ))
-      const total = principal + baseResults.accruedAmount;
+      // Calculate Principal and Accrued separately then sum for Total Consideration
+      // Use raw high-precision AI to match Bloomberg's amount rounding
+      const principal = Math.round((manualPrice / 100 * faceValue) * 100 + 1e-9) / 100;
+      const accrued = Math.round((baseResults.accruedInterestRaw / 100 * faceValue) * 100 + 1e-9) / 100;
+      const total = Math.round((principal + accrued) * 100 + 1e-9) / 100;
       
       return {
         ...baseResults,
         cleanPrice: manualPrice,
-        principalAmount: Math.round(principal * 100) / 100,
-        accruedAmount: Math.round(baseResults.accruedAmount * 100) / 100,
-        totalConsideration: Math.round(total * 100) / 100
+        principalAmount: principal,
+        accruedAmount: accrued,
+        totalConsideration: total
       };
     }
     
     return {
       ...baseResults,
-      principalAmount: Math.round(baseResults.principalAmount * 100) / 100,
-      accruedAmount: Math.round(baseResults.accruedAmount * 100) / 100,
-      totalConsideration: Math.round(baseResults.totalConsideration * 100) / 100
+      principalAmount: Math.round(baseResults.principalAmount * 100 + 1e-9) / 100,
+      accruedAmount: Math.round(baseResults.accruedAmount * 100 + 1e-9) / 100,
+      totalConsideration: Math.round(baseResults.totalConsideration * 100 + 1e-9) / 100
     };
   }, [yieldStr, cleanPriceStr, activeBond, settlementDate, faceValue, lastSource]);
 

@@ -14,6 +14,7 @@ export interface CalculationResult {
   dirtyPrice: number;
   cleanPrice: number;
   accruedInterest: number;
+  accruedInterestRaw: number;
   daysAccrued: number;
   principalAmount: number;
   accruedAmount: number;
