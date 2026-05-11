@@ -251,6 +251,15 @@ export const BONDS: Bond[] = [
     frequency: 1,
     dayCount: 'ACT/365',
     currency: 'EUR'
+  },
+  {
+    id: 'BJ-SUK-2033',
+    name: 'BENSUK 6.2% 01/29/33',
+    couponRate: 6.2,
+    maturityDate: '2033-01-29',
+    frequency: 1,
+    dayCount: 'ACT/360',
+    currency: 'EUR'
   }
 ];
 

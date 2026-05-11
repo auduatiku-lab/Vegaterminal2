@@ -78,35 +78,35 @@ export function calculateBondPrice(
   const { prevC, nextC } = getCouponDates(set, mat, freq);
 
   let daysAccrued: number;
-  let daysInPeriod: number;
+  let daysInPeriodAI: number;
+  let daysInPeriodPV: number;
+
+  const actualDaysInPeriod = getDaysACT(prevC, nextC);
 
   if (dc === 'ACT/365') {
     daysAccrued = getDaysACT(prevC, set);
-    daysInPeriod = 365 / freq;
+    daysInPeriodAI = 365 / freq;
+    daysInPeriodPV = daysInPeriodAI;
   } else if (dc === 'ACT/360') {
     daysAccrued = getDaysACT(prevC, set);
-    daysInPeriod = 360 / freq;
+    daysInPeriodAI = 360 / freq;
+    daysInPeriodPV = actualDaysInPeriod; 
   } else {
     // Default 30E/360
     daysAccrued = getDays30360(prevC, set);
-    daysInPeriod = 360 / freq; 
+    daysInPeriodAI = 360 / freq; 
+    daysInPeriodPV = daysInPeriodAI;
   }
   
   // Accrued Interest per 100 par
-  const aiPer100 = (cp / freq) * (daysAccrued / daysInPeriod);
+  const aiPer100 = (cp / freq) * (daysAccrued / daysInPeriodAI);
   const aiPer100Rounded = Math.round(aiPer100 * 1000000) / 1000000;
 
   const totalMonthsRemaining = (mat.getFullYear() * 12 + mat.getMonth()) - (nextC.getFullYear() * 12 + nextC.getMonth());
   const n = Math.max(0, Math.round(totalMonthsRemaining / (12 / freq))) + 1;
 
-  let daysToNext: number;
-  if (dc === 'ACT/365' || dc === 'ACT/360') {
-    daysToNext = getDaysACT(set, nextC);
-  } else {
-    daysToNext = getDays30360(set, nextC);
-  }
-
-  const w = daysToNext / daysInPeriod;
+  const daysToNext = getDaysACT(set, nextC);
+  const w = daysToNext / daysInPeriodPV;
   const v = 1 / (1 + r);
   
   let couponSum = 0;
