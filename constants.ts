@@ -260,6 +260,14 @@ export const BONDS: Bond[] = [
     frequency: 1,
     dayCount: 'ACT/360',
     currency: 'EUR'
+  },
+  {
+    id: 'DR-2032',
+    name: 'DRCONG 8.75% 04/16/32',
+    couponRate: 8.75,
+    maturityDate: '2032-04-16',
+    frequency: 2,
+    currency: 'USD'
   }
 ];
 
