@@ -268,6 +268,14 @@ export const BONDS: Bond[] = [
     maturityDate: '2032-04-16',
     frequency: 2,
     currency: 'USD'
+  },
+  {
+    id: 'DR-2037',
+    name: 'DRCONG 9.5% 04/16/37',
+    couponRate: 9.5,
+    maturityDate: '2037-04-16',
+    frequency: 2,
+    currency: 'USD'
   }
 ];
 
