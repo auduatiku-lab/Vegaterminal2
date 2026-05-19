@@ -284,6 +284,14 @@ export const BONDS: Bond[] = [
     maturityDate: '2041-01-23',
     frequency: 2,
     currency: 'USD'
+  },
+  {
+    id: 'BH-2032',
+    name: 'BHRAIN 5.875% 06/05/32',
+    couponRate: 5.875,
+    maturityDate: '2032-06-05',
+    frequency: 2,
+    currency: 'USD'
   }
 ];
 
