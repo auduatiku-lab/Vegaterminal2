@@ -292,6 +292,14 @@ export const BONDS: Bond[] = [
     maturityDate: '2032-06-05',
     frequency: 2,
     currency: 'USD'
+  },
+  {
+    id: 'RC-2031',
+    name: 'REPCAM 9.5% 07/31/31',
+    couponRate: 9.5,
+    maturityDate: '2031-07-31',
+    frequency: 2,
+    currency: 'USD'
   }
 ];
 
