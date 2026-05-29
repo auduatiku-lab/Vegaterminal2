@@ -325,6 +325,14 @@ export const BONDS: Bond[] = [
     maturityDate: '2032-11-07',
     frequency: 2,
     currency: 'USD'
+  },
+  {
+    id: 'CG-2035',
+    name: 'REPCON 9.5% 02/17/35',
+    couponRate: 9.5,
+    maturityDate: '2035-02-17',
+    frequency: 2,
+    currency: 'USD'
   }
 ];
 
