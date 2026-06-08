@@ -99,7 +99,7 @@ export function calculateBondPrice(
   }
   
   // Accrued Interest per 100 par
-  const aiPer100 = (cp / freq) * (daysAccrued / daysInPeriodAI);
+  const aiPer100 = bond.isFlat ? 0 : (cp / freq) * (daysAccrued / daysInPeriodAI);
   const aiPer100Rounded = Math.round(aiPer100 * 1000000) / 1000000;
 
   const totalMonthsRemaining = (mat.getFullYear() * 12 + mat.getMonth()) - (nextC.getFullYear() * 12 + nextC.getMonth());

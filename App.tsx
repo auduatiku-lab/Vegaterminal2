@@ -197,6 +197,11 @@ const App: React.FC = () => {
                 <ArrowRightLeft size={18} className="text-cyan-400" />
                 Parameters
               </h2>
+              {activeBond.isFlat && (
+                <span className="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.15em] animate-pulse">
+                  Trades Flat
+                </span>
+              )}
             </div>
 
             <div className="space-y-5 md:space-y-6">

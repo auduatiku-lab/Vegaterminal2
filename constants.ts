@@ -324,7 +324,8 @@ export const BONDS: Bond[] = [
     couponRate: 9.875,
     maturityDate: '2032-11-07',
     frequency: 2,
-    currency: 'USD'
+    currency: 'USD',
+    isFlat: true
   },
   {
     id: 'CG-2035',
@@ -332,7 +333,17 @@ export const BONDS: Bond[] = [
     couponRate: 9.5,
     maturityDate: '2035-02-17',
     frequency: 2,
-    currency: 'USD'
+    currency: 'USD',
+    isFlat: true
+  },
+  {
+    id: 'CG-2036',
+    name: 'REPCON 9.5% 05/26/36',
+    couponRate: 9.5,
+    maturityDate: '2036-05-26',
+    frequency: 2,
+    currency: 'USD',
+    isFlat: true
   }
 ];
 

@@ -8,6 +8,7 @@ export interface Bond {
   frequency: number; 
   currency: string;
   dayCount?: '30E/360' | 'ACT/365' | 'ACT/360';
+  isFlat?: boolean;
 }
 
 export interface CalculationResult {
