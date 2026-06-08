@@ -324,8 +324,7 @@ export const BONDS: Bond[] = [
     couponRate: 9.875,
     maturityDate: '2032-11-07',
     frequency: 2,
-    currency: 'USD',
-    isFlat: true
+    currency: 'USD'
   },
   {
     id: 'CG-2035',
@@ -333,8 +332,7 @@ export const BONDS: Bond[] = [
     couponRate: 9.5,
     maturityDate: '2035-02-17',
     frequency: 2,
-    currency: 'USD',
-    isFlat: true
+    currency: 'USD'
   },
   {
     id: 'CG-2036',
