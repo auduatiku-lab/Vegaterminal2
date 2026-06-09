@@ -17,11 +17,19 @@ import {
   ChevronDown
 } from 'lucide-react';
 
+const getTodayString = () => {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 const App: React.FC = () => {
   // Loading parity case: BENSUK 2033, FV $482,015.00, Price 96.73
   // BBG Total: 474,388.45 (Accrued: 8,135.34, 98 days)
   const [selectedBondId, setSelectedBondId] = useState<string>('BJ-SUK-2033'); 
-  const [settlementDate, setSettlementDate] = useState<string>("2026-05-07");
+  const [settlementDate, setSettlementDate] = useState<string>(getTodayString());
   const [faceValueStr, setFaceValueStr] = useState<string>("482,015.00"); 
   const [cleanPriceStr, setCleanPriceStr] = useState<string>("96.73"); 
   const [yieldStr, setYieldStr] = useState<string>("6.81"); 
