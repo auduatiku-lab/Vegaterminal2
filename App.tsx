@@ -26,9 +26,8 @@ const getTodayString = () => {
 };
 
 const App: React.FC = () => {
-  // Loading parity case: BENSUK 2033, FV $482,015.00, Price 96.73
-  // BBG Total: 474,388.45 (Accrued: 8,135.34, 98 days)
-  const [selectedBondId, setSelectedBondId] = useState<string>('BJ-SUK-2033'); 
+  // Default selected eurobond: NIGERIA 8.6308% 11/13/36 (NG-2036)
+  const [selectedBondId, setSelectedBondId] = useState<string>('NG-2036'); 
   const [settlementDate, setSettlementDate] = useState<string>(getTodayString());
   const [faceValueStr, setFaceValueStr] = useState<string>("482,015.00"); 
   const [cleanPriceStr, setCleanPriceStr] = useState<string>("96.73"); 
@@ -321,13 +320,13 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="mt-[15px] md:mt-[36px]">
-                  <div className="bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 border border-white/10 rounded-[2rem] p-6 md:p-8 relative overflow-hidden group shadow-2xl transition-all hover:scale-[1.01] hover:shadow-violet-500/10 active:scale-[0.98]">
+                  <div className="bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 border border-white/10 rounded-[2rem] p-6 md:p-8 relative overflow-hidden group shadow-2xl transition-all hover:scale-[1.01] hover:shadow-amber-500/10 active:scale-[0.98]">
                     <div className="absolute top-0 right-0 p-4 opacity-5 md:opacity-10 group-hover:opacity-20 transition-opacity">
-                      <Zap size={60} className="text-violet-500" />
+                      <Zap size={60} className="text-amber-500" />
                     </div>
                     <div className="relative z-10">
                       <FormLabel label="Net Settlement (All-in)" />
-                      <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-500 mb-4 tracking-tighter whitespace-nowrap overflow-visible">
+                      <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono text-transparent bg-clip-text bg-gradient-to-r from-[#FFF59D] via-[#FFD700] to-[#FFB300] mb-4 tracking-tighter whitespace-nowrap overflow-visible">
                         ${formatCurrency(results.totalConsideration)}
                       </div>
                       <p className="text-[10px] text-zinc-500 font-bold leading-relaxed max-w-xs uppercase tracking-wider italic">
