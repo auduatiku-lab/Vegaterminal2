@@ -326,7 +326,14 @@ const App: React.FC = () => {
                     </div>
                     <div className="relative z-10">
                       <FormLabel label="Net Settlement (All-in)" />
-                      <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono text-transparent bg-clip-text bg-gradient-to-r from-[#FFF59D] via-[#FFD700] to-[#FFB300] mb-4 tracking-tighter whitespace-nowrap overflow-visible">
+                      <div 
+                        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono bg-gradient-to-r from-[#FFF59D] via-[#FFD700] to-[#FFB300] mb-4 tracking-tighter whitespace-nowrap overflow-visible"
+                        style={{
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          color: '#FFD700',
+                        }}
+                      >
                         ${formatCurrency(results.totalConsideration)}
                       </div>
                       <p className="text-[10px] text-zinc-500 font-bold leading-relaxed max-w-xs uppercase tracking-wider italic">
