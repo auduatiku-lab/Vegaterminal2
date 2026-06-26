@@ -74,10 +74,10 @@ export const BONDS: Bond[] = [
     currency: 'USD'
   },
   {
-    id: 'NG-2036',
-    name: 'NIGERIA 8.6308% 11/13/36',
+    id: 'NG-2036-JAN',
+    name: 'NIGERIA 8.6308% 01/13/36',
     couponRate: 8.6308,
-    maturityDate: '2036-11-13',
+    maturityDate: '2036-01-13',
     frequency: 2,
     currency: 'USD'
   },
@@ -238,6 +238,22 @@ export const BONDS: Bond[] = [
     name: 'EGYPT 5.875% 02/16/31',
     couponRate: 5.875,
     maturityDate: '2031-02-16',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'EG-2032',
+    name: 'EGYPT 7.0529% 01/15/32',
+    couponRate: 7.0529,
+    maturityDate: '2032-01-15',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'EG-2032-MAY',
+    name: 'EGYPT 7.625% 05/29/32',
+    couponRate: 7.625,
+    maturityDate: '2032-05-29',
     frequency: 2,
     currency: 'USD'
   },
