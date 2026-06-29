@@ -64,10 +64,17 @@ const App: React.FC = () => {
     if (activeBond && term === activeBond.name.toLowerCase()) {
       return availableBonds;
     }
-    return availableBonds.filter(bond => 
-      bond.name.toLowerCase().includes(term) || 
-      bond.id.toLowerCase().includes(term)
-    );
+    const tokens = term.split(/\s+/).filter(Boolean);
+    if (tokens.length === 0) {
+      return availableBonds;
+    }
+    return availableBonds.filter(bond => {
+      const bondNameLower = bond.name.toLowerCase();
+      const bondIdLower = bond.id.toLowerCase();
+      return tokens.every(token => 
+        bondNameLower.includes(token) || bondIdLower.includes(token)
+      );
+    });
   }, [searchTerm, availableBonds, activeBond]);
 
   useEffect(() => {
