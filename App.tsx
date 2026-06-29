@@ -26,8 +26,8 @@ const getTodayString = () => {
 };
 
 const App: React.FC = () => {
-  // Default selected eurobond: None (user-selected)
-  const [selectedBondId, setSelectedBondId] = useState<string>(''); 
+  // Default selected eurobond: NIGERIA 6.500% 11/28/27 (NG-2027-NOV)
+  const [selectedBondId, setSelectedBondId] = useState<string>('NG-2027-NOV'); 
   const [settlementDate, setSettlementDate] = useState<string>(getTodayString());
   const [faceValueStr, setFaceValueStr] = useState<string>("482,015.00"); 
   const [cleanPriceStr, setCleanPriceStr] = useState<string>("96.73"); 
@@ -279,7 +279,7 @@ const App: React.FC = () => {
 
             <div className="space-y-5 md:space-y-6">
               <div className="relative group" ref={dropdownRef}>
-                <FormLabel label="Select Eurobond" icon={<Zap size={12} />} />
+                <FormLabel label="Select or Type Eurobond" icon={<Zap size={12} />} />
                 <div className="relative">
                   <input
                     type="text"
