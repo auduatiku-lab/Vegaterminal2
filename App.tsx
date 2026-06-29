@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Bond, CalculationResult, InputSource } from './types';
 import { BONDS, DEFAULT_SETTLEMENT } from './constants';
 import { calculateBondPrice, calculateYield } from './services/bondCalculator';
@@ -26,13 +26,17 @@ const getTodayString = () => {
 };
 
 const App: React.FC = () => {
-  // Default selected eurobond: NIGERIA 8.6308% 11/13/36 (NG-2036)
-  const [selectedBondId, setSelectedBondId] = useState<string>('NG-2036'); 
+  // Default selected eurobond: None (user-selected)
+  const [selectedBondId, setSelectedBondId] = useState<string>(''); 
   const [settlementDate, setSettlementDate] = useState<string>(getTodayString());
   const [faceValueStr, setFaceValueStr] = useState<string>("482,015.00"); 
   const [cleanPriceStr, setCleanPriceStr] = useState<string>("96.73"); 
   const [yieldStr, setYieldStr] = useState<string>("6.81"); 
   const [lastSource, setLastSource] = useState<InputSource>('price');
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const faceValue = useMemo(() => {
     const n = parseFloat(faceValueStr.replace(/,/g, ''));
@@ -49,10 +53,63 @@ const App: React.FC = () => {
   }, []);
 
   const activeBond = useMemo(() => 
-    availableBonds.find(b => b.id === selectedBondId) || availableBonds[0] || BONDS[0]
+    availableBonds.find(b => b.id === selectedBondId) || null
   , [selectedBondId, availableBonds]);
 
+  const filteredBonds = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+    if (!term) {
+      return availableBonds;
+    }
+    if (activeBond && term === activeBond.name.toLowerCase()) {
+      return availableBonds;
+    }
+    return availableBonds.filter(bond => 
+      bond.name.toLowerCase().includes(term) || 
+      bond.id.toLowerCase().includes(term)
+    );
+  }, [searchTerm, availableBonds, activeBond]);
+
+  useEffect(() => {
+    if (activeBond) {
+      setSearchTerm(activeBond.name);
+    } else {
+      setSearchTerm('');
+    }
+  }, [activeBond]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+        if (activeBond) {
+          setSearchTerm(activeBond.name);
+        } else {
+          setSearchTerm('');
+        }
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [activeBond]);
+
   const results: CalculationResult = useMemo(() => {
+    if (!activeBond) {
+      return {
+        dirtyPrice: 0,
+        cleanPrice: 0,
+        accruedInterest: 0,
+        accruedInterestRaw: 0,
+        daysAccrued: 0,
+        principalAmount: 0,
+        accruedAmount: 0,
+        totalConsideration: 0,
+        lastCouponDate: '—',
+        nextCouponDate: '—'
+      };
+    }
     const ytm = parseFloat(yieldStr) || 0;
     const baseResults = calculateBondPrice(ytm, activeBond, settlementDate, faceValue);
     
@@ -91,6 +148,7 @@ const App: React.FC = () => {
     const sanitized = val.replace(/[^0-9.]/g, '');
     setCleanPriceStr(sanitized);
     setLastSource('price');
+    if (!activeBond) return;
     const numericVal = parseFloat(sanitized);
     if (!isNaN(numericVal) && numericVal > 0) {
       const y = calculateYield(numericVal, activeBond, settlementDate, faceValue);
@@ -102,6 +160,7 @@ const App: React.FC = () => {
     const sanitized = val.replace(/[^0-9.-]/g, '');
     setYieldStr(sanitized);
     setLastSource('yield');
+    if (!activeBond) return;
     const numericVal = parseFloat(sanitized);
     if (!isNaN(numericVal)) {
       const res = calculateBondPrice(numericVal, activeBond, settlementDate, faceValue);
@@ -133,6 +192,7 @@ const App: React.FC = () => {
 
   // Re-calculate yield or price when bond, settlement, or face value changes
   useEffect(() => {
+    if (!activeBond) return;
     if (lastSource === 'price') {
       const numericPrice = parseFloat(cleanPriceStr);
       if (!isNaN(numericPrice) && numericPrice > 0) {
@@ -210,7 +270,7 @@ const App: React.FC = () => {
                 <ArrowRightLeft size={18} className="text-cyan-400" />
                 Parameters
               </h2>
-              {activeBond.isFlat && (
+              {activeBond?.isFlat && (
                 <span className="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.15em] animate-pulse">
                   Trades Flat
                 </span>
@@ -218,19 +278,75 @@ const App: React.FC = () => {
             </div>
 
             <div className="space-y-5 md:space-y-6">
-              <div className="relative group">
+              <div className="relative group" ref={dropdownRef}>
                 <FormLabel label="Select Eurobond" icon={<Zap size={12} />} />
                 <div className="relative">
-                  <select 
-                    value={selectedBondId}
-                    onChange={(e) => setSelectedBondId(e.target.value)}
-                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 px-4 text-white font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-pointer appearance-none pr-10"
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (activeBond) {
+                        if (val.length <= activeBond.name.length - 2) {
+                          setSelectedBondId('');
+                          setSearchTerm('');
+                          setIsDropdownOpen(true);
+                          return;
+                        }
+                      }
+                      setSearchTerm(val);
+                      setIsDropdownOpen(true);
+                    }}
+                    onFocus={() => {
+                      setIsDropdownOpen(true);
+                    }}
+                    placeholder="Type or Select Eurobond.."
+                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 pl-4 pr-12 text-white font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-text"
+                  />
+                  <button 
+                    type="button"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors focus:outline-none"
                   >
-                    {availableBonds.map(bond => (
-                      <option key={bond.id} value={bond.id} className="bg-zinc-950">{bond.name}</option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" size={16} />
+                    <ChevronDown className={`transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} size={16} />
+                  </button>
+
+                  {isDropdownOpen && (
+                    <div className="absolute z-50 w-full mt-2 bg-zinc-950 border border-white/10 rounded-xl shadow-2xl max-h-60 overflow-y-auto divide-y divide-white/5 scrollbar-thin scrollbar-thumb-zinc-800">
+                      {filteredBonds.length > 0 ? (
+                        filteredBonds.map(bond => {
+                          const isSelected = bond.id === selectedBondId;
+                          return (
+                            <button
+                              key={bond.id}
+                              type="button"
+                              onClick={() => {
+                                setSelectedBondId(bond.id);
+                                setSearchTerm(bond.name);
+                                setIsDropdownOpen(false);
+                              }}
+                              className={`w-full text-left px-4 py-[4px] text-sm font-bold transition-colors flex items-center justify-between ${
+                                isSelected 
+                                  ? 'bg-cyan-500/10 text-cyan-400 font-extrabold' 
+                                  : 'text-zinc-300 hover:bg-cyan-500/10 hover:text-cyan-300'
+                              }`}
+                            >
+                              <span>{bond.name}</span>
+                              {isSelected && (
+                                <span className="text-xs bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded-md">
+                                  Selected
+                                </span>
+                              )}
+                            </button>
+                          );
+                        })
+                      ) : (
+                        <div className="px-4 py-4 text-zinc-500 text-sm italic font-medium text-center">
+                          No eurobonds found matching search
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -337,7 +453,7 @@ const App: React.FC = () => {
                         ${formatCurrency(results.totalConsideration)}
                       </div>
                       <p className="text-[10px] text-zinc-500 font-bold leading-relaxed max-w-xs uppercase tracking-wider italic">
-                        Final cash consideration for {activeBond.currency} on {settlementDate}.
+                        Final cash consideration for {activeBond?.currency || '—'} on {settlementDate}.
                       </p>
                     </div>
                   </div>
@@ -348,19 +464,19 @@ const App: React.FC = () => {
             <section className="mt-8 md:mt-10 pt-8 md:pt-10 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
               <div>
                 <p className="text-[8px] md:text-[9px] font-black text-zinc-600 uppercase mb-2 tracking-[0.2em]">Coupon</p>
-                <p className="text-xs md:text-sm font-black text-zinc-100 mono">{activeBond.couponRate.toFixed(4)}%</p>
+                <p className="text-xs md:text-sm font-black text-zinc-100 mono">{activeBond ? `${activeBond.couponRate.toFixed(4)}%` : '—'}</p>
               </div>
               <div>
                 <p className="text-[8px] md:text-[9px] font-black text-zinc-600 uppercase mb-2 tracking-[0.2em]">Maturity</p>
-                <p className="text-xs md:text-sm font-black text-zinc-100 mono">{activeBond.displayMaturity || activeBond.maturityDate}</p>
+                <p className="text-xs md:text-sm font-black text-zinc-100 mono">{activeBond ? (activeBond.displayMaturity || activeBond.maturityDate) : '—'}</p>
               </div>
               <div>
                 <p className="text-[8px] md:text-[9px] font-black text-zinc-600 uppercase mb-2 tracking-[0.2em]">Currency</p>
-                <p className="text-xs md:text-sm font-black text-zinc-100 mono">{activeBond.currency}</p>
+                <p className="text-xs md:text-sm font-black text-zinc-100 mono">{activeBond?.currency || '—'}</p>
               </div>
               <div>
                 <p className="text-[8px] md:text-[9px] font-black text-zinc-600 uppercase mb-2 tracking-[0.2em]">Cycle</p>
-                <p className="text-xs md:text-sm font-black text-cyan-500 mono">{activeBond.frequency === 4 ? 'QUARTERLY' : 'SEMIANNUAL'}</p>
+                <p className="text-xs md:text-sm font-black text-cyan-500 mono">{activeBond ? (activeBond.frequency === 4 ? 'QUARTERLY' : 'SEMIANNUAL') : '—'}</p>
               </div>
             </section>
           </section>
