@@ -14,7 +14,8 @@ import {
   Zap,
   TrendingUp,
   Cpu,
-  ChevronDown
+  ChevronDown,
+  X
 } from 'lucide-react';
 
 const getTodayString = () => {
@@ -308,8 +309,22 @@ const App: React.FC = () => {
                       setIsDropdownOpen(true);
                     }}
                     placeholder="Type or Select Eurobond.."
-                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 pl-4 pr-12 text-white font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-text"
+                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 pl-4 pr-16 text-white font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-text"
                   />
+                  {searchTerm && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedBondId('');
+                        setSearchTerm('');
+                        setIsDropdownOpen(true);
+                      }}
+                      className="absolute right-10 top-1/2 -translate-y-1/2 text-red-500 hover:text-red-400 p-1 hover:bg-red-500/10 rounded-full transition-colors focus:outline-none flex items-center justify-center"
+                      title="Clear Selection"
+                    >
+                      <X size={14} className="stroke-[3]" />
+                    </button>
+                  )}
                   <button 
                     type="button"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
