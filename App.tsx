@@ -339,11 +339,6 @@ const App: React.FC = () => {
                               }`}
                             >
                               <span>{bond.name}</span>
-                              {isSelected && (
-                                <span className="text-xs bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded-md">
-                                  Selected
-                                </span>
-                              )}
                             </button>
                           );
                         })
