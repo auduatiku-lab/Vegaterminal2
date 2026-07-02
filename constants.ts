@@ -274,6 +274,14 @@ export const BONDS: Bond[] = [
     currency: 'USD'
   },
   {
+    id: 'EG-2034-MAY',
+    name: 'EGYPT 7.625% 05/20/34',
+    couponRate: 7.625,
+    maturityDate: '2034-05-20',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
     id: 'ZA-2044',
     name: 'SOUTH AFRICA 5.875% 09/16/44',
     couponRate: 5.875,

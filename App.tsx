@@ -65,16 +65,44 @@ const App: React.FC = () => {
     if (activeBond && term === activeBond.name.toLowerCase()) {
       return availableBonds;
     }
-    const tokens = term.split(/\s+/).filter(Boolean);
+    
+    // Normalize fractional search terms to decimals (e.g. "7 5/8" -> "7.625")
+    let normalizedTerm = term;
+    const fractionMap: { [key: string]: string } = {
+      '7 5/8': '7.625',
+      '5/8': '625',
+      '1/8': '125',
+      '1/4': '250',
+      '3/8': '375',
+      '1/2': '500',
+      '3/4': '750',
+      '7/8': '875'
+    };
+    
+    Object.entries(fractionMap).forEach(([fraction, decimal]) => {
+      normalizedTerm = normalizedTerm.replace(fraction, decimal);
+    });
+
+    const tokens = normalizedTerm.split(/\s+/).filter(Boolean);
+    const originalTokens = term.split(/\s+/).filter(Boolean);
+
     if (tokens.length === 0) {
       return availableBonds;
     }
+
     return availableBonds.filter(bond => {
       const bondNameLower = bond.name.toLowerCase();
       const bondIdLower = bond.id.toLowerCase();
-      return tokens.every(token => 
+      
+      const matchesNormalized = tokens.every(token => 
         bondNameLower.includes(token) || bondIdLower.includes(token)
       );
+      
+      const matchesOriginal = originalTokens.every(token => 
+        bondNameLower.includes(token) || bondIdLower.includes(token)
+      );
+
+      return matchesNormalized || matchesOriginal;
     });
   }, [searchTerm, availableBonds, activeBond]);
 
