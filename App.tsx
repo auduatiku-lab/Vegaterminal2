@@ -66,21 +66,33 @@ const App: React.FC = () => {
       return availableBonds;
     }
     
-    // Normalize fractional search terms to decimals (e.g. "7 5/8" -> "7.625")
+    // Normalize fractional search terms to decimals dynamically (e.g. "6 7/8" -> "6.875", "7 5/8" -> "7.625")
     let normalizedTerm = term;
-    const fractionMap: { [key: string]: string } = {
-      '7 5/8': '7.625',
-      '5/8': '625',
-      '1/8': '125',
-      '1/4': '250',
-      '3/8': '375',
-      '1/2': '500',
-      '3/4': '750',
-      '7/8': '875'
-    };
     
-    Object.entries(fractionMap).forEach(([fraction, decimal]) => {
-      normalizedTerm = normalizedTerm.replace(fraction, decimal);
+    // Replace mixed fractions like "6 7/8" with decimals like "6.875"
+    normalizedTerm = normalizedTerm.replace(/(\d+)\s+(\d+)\/(\d+)/g, (match, whole, num, denom) => {
+      const parsedWhole = parseInt(whole, 10);
+      const parsedNum = parseInt(num, 10);
+      const parsedDenom = parseInt(denom, 10);
+      if (parsedDenom !== 0) {
+        return (parsedWhole + parsedNum / parsedDenom).toString();
+      }
+      return match;
+    });
+
+    // Replace standalone fractions like "7/8" with decimal substring "875" to match the ".875" part of coupon rates
+    normalizedTerm = normalizedTerm.replace(/(\d+)\/(\d+)/g, (match, num, denom) => {
+      const parsedNum = parseInt(num, 10);
+      const parsedDenom = parseInt(denom, 10);
+      if (parsedDenom !== 0) {
+        const val = parsedNum / parsedDenom;
+        const str = val.toString();
+        if (str.startsWith('0.')) {
+          return str.slice(2); // e.g. "875"
+        }
+        return str;
+      }
+      return match;
     });
 
     const tokens = normalizedTerm.split(/\s+/).filter(Boolean);
