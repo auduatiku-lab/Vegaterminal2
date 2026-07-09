@@ -202,6 +202,14 @@ export const BONDS: Bond[] = [
     currency: 'USD'
   },
   {
+    id: 'EGYSUK-2026-FEB',
+    name: 'EGYSUK 10.875% 02/28/26',
+    couponRate: 10.875,
+    maturityDate: '2026-02-28',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
     id: 'EG-2027',
     name: 'EGYPT 7.500% 01/31/27',
     couponRate: 7.5,
@@ -226,10 +234,26 @@ export const BONDS: Bond[] = [
     currency: 'USD'
   },
   {
+    id: 'EGYSUK-2028-JUN',
+    name: 'EGYSUK 7.875% 06/25/28',
+    couponRate: 7.875,
+    maturityDate: '2028-06-25',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
     id: 'EG-2029',
     name: 'EGYPT 7.6003% 03/01/29',
     couponRate: 7.6003,
     maturityDate: '2029-03-01',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'EGYSUK-2029-APR',
+    name: 'EGYSUK 6.375% 04/07/29',
+    couponRate: 6.375,
+    maturityDate: '2029-04-07',
     frequency: 2,
     currency: 'USD'
   },
@@ -254,6 +278,14 @@ export const BONDS: Bond[] = [
     name: 'EGYPT 7.625% 05/29/32',
     couponRate: 7.625,
     maturityDate: '2032-05-29',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'EGYSK-2032-OCT',
+    name: 'EGYSK 7.950% 10/07/32',
+    couponRate: 7.95,
+    maturityDate: '2032-10-07',
     frequency: 2,
     currency: 'USD'
   },
@@ -286,6 +318,62 @@ export const BONDS: Bond[] = [
     name: 'EGYPT 6.875% 04/30/40',
     couponRate: 6.875,
     maturityDate: '2040-04-30',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'EG-2047-JAN',
+    name: 'EGYPT 8.500% 01/31/47',
+    couponRate: 8.5,
+    maturityDate: '2047-01-31',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'EG-2048-FEB',
+    name: 'EGYPT 7.903% 02/21/48',
+    couponRate: 7.903,
+    maturityDate: '2048-02-21',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'EG-2049-MAR',
+    name: 'EGYPT 8.7002% 03/01/49',
+    couponRate: 8.7002,
+    maturityDate: '2049-03-01',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'EG-2050-MAY',
+    name: 'EGYPT 8.875% 05/29/50',
+    couponRate: 8.875,
+    maturityDate: '2050-05-29',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'EG-2051-SEP',
+    name: 'EGYPT 8.750% 09/30/51',
+    couponRate: 8.75,
+    maturityDate: '2051-09-30',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'EG-2059-NOV',
+    name: 'EGYPT 8.150% 11/20/59',
+    couponRate: 8.15,
+    maturityDate: '2059-11-20',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'EG-2061-FEB',
+    name: 'EGYPT 7.500% 02/16/61',
+    couponRate: 7.5,
+    maturityDate: '2061-02-16',
     frequency: 2,
     currency: 'USD'
   },
@@ -422,6 +510,56 @@ export const BONDS: Bond[] = [
     frequency: 2,
     currency: 'USD',
     isFlat: true
+  },
+  {
+    id: 'GH-2035-JUL',
+    name: 'GHANA 5.000% 07/03/35',
+    couponRate: 5.0,
+    maturityDate: '2035-07-03',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'GH-2037-JAN',
+    name: 'GHANA 1.500% 01/03/37',
+    couponRate: 1.5,
+    maturityDate: '2037-01-03',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'IVYCST-2028-MAR',
+    name: 'IVYCST 6.375% 03/03/28',
+    couponRate: 6.375,
+    maturityDate: '2028-03-03',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'IVYCST-2030-MAR',
+    name: 'IVYCST 5.250% 03/22/30',
+    couponRate: 5.25,
+    maturityDate: '2030-03-22',
+    frequency: 1,
+    dayCount: 'ACT/365',
+    currency: 'EUR'
+  },
+  {
+    id: 'IVYCST-2031-OCT',
+    name: 'IVYCST 5.875% 10/17/31',
+    couponRate: 5.875,
+    maturityDate: '2031-10-17',
+    frequency: 1,
+    dayCount: 'ACT/365',
+    currency: 'EUR'
+  },
+  {
+    id: 'SEPLLN-2030-MAR',
+    name: 'SEPLLN 9.125% 03/21/30',
+    couponRate: 9.125,
+    maturityDate: '2030-03-21',
+    frequency: 2,
+    currency: 'USD'
   }
 ];
 
