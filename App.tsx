@@ -163,10 +163,11 @@ const App: React.FC = () => {
     
     if (lastSource === 'price') {
       const manualPrice = parseFloat(cleanPriceStr) || 0;
+      const effectiveFace = baseResults.outstandingFaceValue !== undefined ? baseResults.outstandingFaceValue : faceValue;
       // Calculate Principal and Accrued separately then sum for Total Consideration
       // Use raw high-precision AI to match Bloomberg's amount rounding
-      const principal = Math.round((manualPrice / 100 * faceValue) * 100 + 1e-9) / 100;
-      let accrued = Math.round((baseResults.accruedInterestRaw / 100 * faceValue) * 100 + 1e-9) / 100;
+      const principal = Math.round((manualPrice / 100 * effectiveFace) * 100 + 1e-9) / 100;
+      let accrued = Math.round((baseResults.accruedInterestRaw / 100 * effectiveFace) * 100 + 1e-9) / 100;
       let total = Math.round((principal + accrued) * 100 + 1e-9) / 100;
       
       // Bloomberg parity mapping for EGYPT 7.6003% 2029
@@ -349,7 +350,7 @@ const App: React.FC = () => {
                       setIsDropdownOpen(true);
                     }}
                     placeholder="Type or Select Eurobond.."
-                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 pl-4 pr-16 text-white font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-text"
+                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 pl-4 pr-[62.05px] text-white font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-text"
                   />
                   {searchTerm && (
                     <button
@@ -485,7 +486,14 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="group transition-transform active:scale-[0.99]">
-                  <FormLabel label={`Accrued Interest (${results.daysAccrued}d)`} />
+                  <div className="flex justify-between items-start">
+                    <FormLabel label={`Accrued Interest (${results.daysAccrued}d)`} />
+                    {results.poolFactor !== undefined && results.poolFactor < 1.0 && (
+                      <span className="bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider select-none">
+                        Sink Factor: {results.poolFactor}
+                      </span>
+                    )}
+                  </div>
                   <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black mono text-zinc-300 tracking-tighter whitespace-nowrap overflow-visible">
                     <span className="text-zinc-500 text-lg md:text-xl lg:text-2xl font-medium mr-1">$</span>
                     {formatCurrency(results.accruedAmount)}
@@ -556,6 +564,18 @@ const App: React.FC = () => {
                 <span className="text-zinc-500">Next Coupon</span>
                 <span className="text-zinc-200">{results.nextCouponDate}</span>
               </div>
+              {results.poolFactor !== undefined && results.poolFactor < 1.0 && (
+                <>
+                  <div className="flex justify-between items-center text-amber-400">
+                    <span className="text-zinc-500">Pool Factor</span>
+                    <span>{results.poolFactor.toFixed(3)}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-amber-400">
+                    <span className="text-zinc-500">Outstanding Face</span>
+                    <span>${formatCurrency(results.outstandingFaceValue || 0)}</span>
+                  </div>
+                </>
+              )}
               <div className="h-px bg-white/5 my-1"></div>
               <div className="flex justify-between items-center">
                 <span className="text-cyan-500/70">Days Accrued</span>

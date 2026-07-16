@@ -22,6 +22,8 @@ export interface CalculationResult {
   totalConsideration: number;
   lastCouponDate: string;
   nextCouponDate: string;
+  poolFactor?: number;
+  outstandingFaceValue?: number;
 }
 
 export type InputSource = 'price' | 'yield';

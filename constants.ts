@@ -560,6 +560,298 @@ export const BONDS: Bond[] = [
     maturityDate: '2030-03-21',
     frequency: 2,
     currency: 'USD'
+  },
+  {
+    id: 'IVYCST-2032-JAN',
+    name: 'IVYCST 4.875% 01/30/32',
+    couponRate: 4.875,
+    maturityDate: '2032-01-30',
+    frequency: 1,
+    dayCount: 'ACT/365',
+    currency: 'EUR'
+  },
+  {
+    id: 'IVYCST-2032-DEC',
+    name: 'IVYCST 5.750% 12/31/32',
+    couponRate: 5.75,
+    maturityDate: '2032-12-31',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'IVYCST-2033-JAN',
+    name: 'IVYCST 7.625% 01/30/33',
+    couponRate: 7.625,
+    maturityDate: '2033-01-30',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'IVYCST-2033-JUN',
+    name: 'IVYCST 6.125% 06/15/33',
+    couponRate: 6.125,
+    maturityDate: '2033-06-15',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'IVYCST-2036-APR',
+    name: 'IVYCST 8.075% 04/01/36',
+    couponRate: 8.075,
+    maturityDate: '2036-04-01',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'IVYCST-2037-JAN',
+    name: 'IVYCST 8.250% 01/30/37',
+    couponRate: 8.25,
+    maturityDate: '2037-01-30',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'IVYCST-2040-OCT',
+    name: 'IVYCST 6.875% 10/17/40',
+    couponRate: 6.875,
+    maturityDate: '2040-10-17',
+    frequency: 1,
+    dayCount: 'ACT/365',
+    currency: 'EUR'
+  },
+  {
+    id: 'IVYCST-2041-FEB',
+    name: 'IVYCST 6.750% 02/25/41',
+    couponRate: 6.75,
+    maturityDate: '2041-02-25',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'IVYCST-2048-MAR',
+    name: 'IVYCST 6.625% 03/22/48',
+    couponRate: 6.625,
+    maturityDate: '2048-03-22',
+    frequency: 1,
+    dayCount: 'ACT/365',
+    currency: 'EUR'
+  },
+  {
+    id: 'ACCESS-PERP',
+    name: 'ACCESS 9.125% PERP',
+    couponRate: 9.125,
+    maturityDate: '2026-10-07',
+    displayMaturity: 'PERP',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'ACCESS-2026-SEP',
+    name: 'ACCESS 6.125% 09/21/26',
+    couponRate: 6.125,
+    maturityDate: '2026-09-21',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'DANGFE-2031-MAY',
+    name: 'DANGFE 7.75% 05/05/31',
+    couponRate: 7.75,
+    maturityDate: '2031-05-05',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'DAPERE-2031-JUL',
+    name: 'DAPERE 7.50% 07/16/31',
+    couponRate: 7.5,
+    maturityDate: '2031-07-16',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'ETINL-2029-OCT',
+    name: 'ETINL 10.125% 10/15/29',
+    couponRate: 10.125,
+    maturityDate: '2029-10-15',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'ETINL-2036-AUG',
+    name: 'ETINL 8.875% 08/19/36',
+    couponRate: 8.875,
+    maturityDate: '2036-08-19',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'FIDBAN-2026-OCT',
+    name: 'FIDBAN 7.625% 10/28/26',
+    couponRate: 7.625,
+    maturityDate: '2026-10-28',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SONGOL-2031-JAN',
+    name: 'SONGOL 10.00% 01/29/31',
+    couponRate: 10.0,
+    maturityDate: '2031-01-29',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'KENINT-2031-FEB',
+    name: 'KENINT 9.75% 02/16/31',
+    couponRate: 9.75,
+    maturityDate: '2031-02-16',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'KENINT-2032-MAY',
+    name: 'KENINT 8.00% 05/22/32',
+    couponRate: 8.0,
+    maturityDate: '2032-05-22',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'KENINT-2033-OCT',
+    name: 'KENINT 7.875% 10/09/33',
+    couponRate: 7.875,
+    maturityDate: '2033-10-09',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'KENINT-2034-JAN',
+    name: 'KENINT 6.30% 01/23/34',
+    couponRate: 6.3,
+    maturityDate: '2034-01-23',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'KENINT-2034-FEB',
+    name: 'KENINT 7.875% 02/26/34',
+    couponRate: 7.875,
+    maturityDate: '2034-02-26',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'KENINT-2036-MAR',
+    name: 'KENINT 9.50% 03/05/36',
+    couponRate: 9.5,
+    maturityDate: '2036-03-05',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'KENINT-2038-OCT',
+    name: 'KENINT 8.80% 10/09/38',
+    couponRate: 8.8,
+    maturityDate: '2038-10-09',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'KENINT-2039-FEB',
+    name: 'KENINT 8.70% 02/26/39',
+    couponRate: 8.7,
+    maturityDate: '2039-02-26',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'KENINT-2048-FEB',
+    name: 'KENINT 8.25% 02/28/48',
+    couponRate: 8.25,
+    maturityDate: '2048-02-28',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'GABON-2029-FEB',
+    name: 'GABON 9.50% 02/18/29',
+    couponRate: 9.5,
+    maturityDate: '2029-02-18',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'GABON-2031-FEB',
+    name: 'GABON 6.625% 02/06/31',
+    couponRate: 6.625,
+    maturityDate: '2031-02-06',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'GABON-2031-NOV',
+    name: 'GABON 7.00% 11/24/31',
+    couponRate: 7.0,
+    maturityDate: '2031-11-24',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'MOROC-2027-DEC',
+    name: 'MOROC 2.375% 12/15/27',
+    couponRate: 2.375,
+    maturityDate: '2027-12-15',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'MOROC-2028-MAR',
+    name: 'MOROC 5.95% 03/08/28',
+    couponRate: 5.95,
+    maturityDate: '2028-03-08',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'MOROC-2032-DEC',
+    name: 'MOROC 3.00% 12/15/32',
+    couponRate: 3.0,
+    maturityDate: '2032-12-15',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'MOROC-2033-SEP',
+    name: 'MOROC 6.50% 09/08/33',
+    couponRate: 6.5,
+    maturityDate: '2033-09-08',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'MOROC-2042-DEC',
+    name: 'MOROC 5.50% 12/11/42',
+    couponRate: 5.5,
+    maturityDate: '2042-12-11',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'MOROC-2050-DEC',
+    name: 'MOROC 4.00% 12/15/50',
+    couponRate: 4.0,
+    maturityDate: '2050-12-15',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'MOZAM-2031-SEP',
+    name: 'MOZAM 9.00% 09/15/31',
+    couponRate: 9.0,
+    maturityDate: '2031-09-15',
+    frequency: 2,
+    currency: 'USD'
   }
 ];
 
