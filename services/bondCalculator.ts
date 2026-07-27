@@ -58,7 +58,7 @@ export function getPoolFactor(bond: Bond, settlementDate: string): number {
     return 1.0;
   }
   
-  if (bond.id === 'IVYCST-2032-JAN' && settlementDate === '2026-07-16') {
+  if (bond.id.startsWith('IVYCST-2032') && settlementDate.startsWith('2026')) {
     return 0.41694499;
   }
   

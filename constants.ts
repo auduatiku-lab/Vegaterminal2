@@ -377,14 +377,7 @@ export const BONDS: Bond[] = [
     frequency: 2,
     currency: 'USD'
   },
-  {
-    id: 'ZA-2044',
-    name: 'SOUTH AFRICA 5.875% 09/16/44',
-    couponRate: 5.875,
-    maturityDate: '2044-09-16',
-    frequency: 2,
-    currency: 'USD'
-  },
+
   {
     id: 'BJ-2032',
     name: 'BENIN 4.875% 01/19/32',
@@ -850,6 +843,338 @@ export const BONDS: Bond[] = [
     name: 'MOZAM 9.00% 09/15/31',
     couponRate: 9.0,
     maturityDate: '2031-09-15',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'OMAN-2030-JUN',
+    name: 'OMANGS 4.875% 06/15/30',
+    couponRate: 4.875,
+    maturityDate: '2030-06-15',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'PKSTAN-2029-JAN',
+    name: 'PKSTAN 7.95% 01/31/29',
+    couponRate: 7.95,
+    maturityDate: '2029-01-31',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'RWANDA-2031-AUG',
+    name: 'RWANDA 5.50% 08/09/31',
+    couponRate: 5.5,
+    maturityDate: '2031-08-09',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SENEGL-2028-MAR',
+    name: 'SENEGL 4.75% 03/13/28',
+    couponRate: 4.75,
+    maturityDate: '2028-03-13',
+    frequency: 1,
+    dayCount: 'ACT/365',
+    currency: 'EUR'
+  },
+  {
+    id: 'SENEGL-2031-JUN',
+    name: 'SENEGL 7.75% 06/10/31',
+    couponRate: 7.75,
+    maturityDate: '2031-06-10',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SENEGL-2033-MAY',
+    name: 'SENEGL 6.25% 05/23/33',
+    couponRate: 6.25,
+    maturityDate: '2033-05-23',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SENEGL-2037-JUN',
+    name: 'SENEGL 5.375% 06/08/37',
+    couponRate: 5.375,
+    maturityDate: '2037-06-08',
+    frequency: 1,
+    dayCount: 'ACT/365',
+    currency: 'EUR'
+  },
+  {
+    id: 'SENEGL-2048-MAR',
+    name: 'SENEGL 6.75% 03/13/48',
+    couponRate: 6.75,
+    maturityDate: '2048-03-13',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SOAF-2027-SEP',
+    name: 'SOAF 4.85% 09/27/27',
+    couponRate: 4.85,
+    maturityDate: '2027-09-27',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SOAF-2028-OCT',
+    name: 'SOAF 4.3% 10/12/28',
+    couponRate: 4.3,
+    maturityDate: '2028-10-12',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SOAF-2029-SEP',
+    name: 'SOAF 4.85% 09/30/29',
+    couponRate: 4.85,
+    maturityDate: '2029-09-30',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SOAF-2030-JUN',
+    name: 'SOAF 5.875% 06/22/30',
+    couponRate: 5.875,
+    maturityDate: '2030-06-22',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SOAF-2032-APR',
+    name: 'SOAF 5.875% 04/20/32',
+    couponRate: 5.875,
+    maturityDate: '2032-04-20',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SOAF-2041-MAR',
+    name: 'SOAF 6.25% 03/08/41',
+    couponRate: 6.25,
+    maturityDate: '2041-03-08',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SOAF-2044-JUL',
+    name: 'SOAF 5.375% 07/24/44',
+    couponRate: 5.375,
+    maturityDate: '2044-07-24',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SOAF-2046-OCT',
+    name: 'SOAF 5% 10/12/46',
+    couponRate: 5,
+    maturityDate: '2046-10-12',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SOAF-2047-SEP',
+    name: 'SOAF 5.65% 09/27/47',
+    couponRate: 5.65,
+    maturityDate: '2047-09-27',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SOAF-2048-JUN',
+    name: 'SOAF 6.3% 06/22/48',
+    couponRate: 6.3,
+    maturityDate: '2048-06-22',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SOAF-2049-SEP',
+    name: 'SOAF 5.75% 09/30/49',
+    couponRate: 5.75,
+    maturityDate: '2049-09-30',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SOAF-2052-APR',
+    name: 'SOAF 7.3% 04/20/52',
+    couponRate: 7.3,
+    maturityDate: '2052-04-20',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'SOAF-2055-DEC',
+    name: 'SOAF 7.25% 12/11/55',
+    couponRate: 7.25,
+    maturityDate: '2055-12-11',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'AFREXI-2029-SEP',
+    name: 'AFREXI 3.994% 09/21/29',
+    couponRate: 3.994,
+    maturityDate: '2029-09-21',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'AFREXI-2031-MAY',
+    name: 'AFREXI 3.798% 05/17/31',
+    couponRate: 3.798,
+    maturityDate: '2031-05-17',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'AFRFIN-2028-APR',
+    name: 'AFRFIN 2.875% 04/28/28',
+    couponRate: 2.875,
+    maturityDate: '2028-04-28',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'AFRFIN-2029-OCT',
+    name: 'AFRFIN 5.55% 10/08/29',
+    couponRate: 5.55,
+    maturityDate: '2029-10-08',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'AFRFIN-2029-OCT-30',
+    name: 'AFRFIN 3.75% 10/30/29',
+    couponRate: 3.75,
+    maturityDate: '2029-10-30',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'AFRFIN-2031-JUN',
+    name: 'AFRFIN 5.375% 06/23/31',
+    couponRate: 5.375,
+    maturityDate: '2031-06-23',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'AFRFIN-PERP',
+    name: 'AFRFIN 7.5% PERP',
+    couponRate: 7.5,
+    maturityDate: '2026-04-23',
+    displayMaturity: 'PERP',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'BOAD-2027-JUL',
+    name: 'BOAD 5.000% 07/27/27',
+    couponRate: 5.0,
+    maturityDate: '2027-07-27',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'BOAD-2031-OCT',
+    name: 'BOAD 4.700% 10/22/31',
+    couponRate: 4.7,
+    maturityDate: '2031-10-22',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'BOAD-2033-JAN',
+    name: 'BOAD 2.750% 01/22/33',
+    couponRate: 2.75,
+    maturityDate: '2033-01-22',
+    frequency: 1,
+    dayCount: 'ACT/365',
+    currency: 'EUR'
+  },
+  {
+    id: 'BOAD-2055-FEB',
+    name: 'BOAD 8.200% 02/13/55',
+    couponRate: 8.2,
+    maturityDate: '2055-02-13',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'TDBBNK-2028-JUN',
+    name: 'TDBBNK 4.125% 06/30/28',
+    couponRate: 4.125,
+    maturityDate: '2028-06-30',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'T-2028-JUN',
+    name: 'T 4.125% 06/30/28',
+    couponRate: 4.125,
+    maturityDate: '2028-06-30',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'T-2029-JUL',
+    name: 'T 4.125% 07/15/29',
+    couponRate: 4.125,
+    maturityDate: '2029-07-15',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'T-2031-JUN',
+    name: 'T 4.125% 06/30/31',
+    couponRate: 4.125,
+    maturityDate: '2031-06-30',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'T-2033-JUN',
+    name: 'T 4.25% 06/30/33',
+    couponRate: 4.25,
+    maturityDate: '2033-06-30',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'T-2036-MAY',
+    name: 'T 4.375% 05/15/36',
+    couponRate: 4.375,
+    maturityDate: '2036-05-15',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'T-2046-MAY',
+    name: 'T 5.000% 05/15/46',
+    couponRate: 5.0,
+    maturityDate: '2046-05-15',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'T-2055-FEB',
+    name: 'T 4.625% 02/15/55',
+    couponRate: 4.625,
+    maturityDate: '2055-02-15',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'T-2056-MAY',
+    name: 'T 5.000% 05/15/56',
+    couponRate: 5.0,
+    maturityDate: '2056-05-15',
     frequency: 2,
     currency: 'USD'
   }
