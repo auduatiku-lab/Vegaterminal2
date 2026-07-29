@@ -202,8 +202,8 @@ export const BONDS: Bond[] = [
     currency: 'USD'
   },
   {
-    id: 'EGYSUK-2026-FEB',
-    name: 'EGYSUK 10.875% 02/28/26',
+    id: 'EGYSK-2026-FEB',
+    name: 'EGYSK 10.875% 02/28/26',
     couponRate: 10.875,
     maturityDate: '2026-02-28',
     frequency: 2,
@@ -234,8 +234,8 @@ export const BONDS: Bond[] = [
     currency: 'USD'
   },
   {
-    id: 'EGYSUK-2028-JUN',
-    name: 'EGYSUK 7.875% 06/25/28',
+    id: 'EGYSK-2028-JUN',
+    name: 'EGYSK 7.875% 06/25/28',
     couponRate: 7.875,
     maturityDate: '2028-06-25',
     frequency: 2,
@@ -250,8 +250,8 @@ export const BONDS: Bond[] = [
     currency: 'USD'
   },
   {
-    id: 'EGYSUK-2029-APR',
-    name: 'EGYSUK 6.375% 04/07/29',
+    id: 'EGYSK-2029-APR',
+    name: 'EGYSK 6.375% 04/07/29',
     couponRate: 6.375,
     maturityDate: '2029-04-07',
     frequency: 2,
@@ -1042,6 +1042,22 @@ export const BONDS: Bond[] = [
     currency: 'USD'
   },
   {
+    id: 'AFREXI-2032-JAN',
+    name: 'AFREXI 6.25% 01/23/32',
+    couponRate: 6.25,
+    maturityDate: '2032-01-23',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'AFREXI-2036-JUL',
+    name: 'AFREXI 7.125% 07/23/36',
+    couponRate: 7.125,
+    maturityDate: '2036-07-23',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
     id: 'AFRFIN-2028-APR',
     name: 'AFRFIN 2.875% 04/28/28',
     couponRate: 2.875,
@@ -1077,7 +1093,7 @@ export const BONDS: Bond[] = [
     id: 'AFRFIN-PERP',
     name: 'AFRFIN 7.5% PERP',
     couponRate: 7.5,
-    maturityDate: '2026-04-23',
+    maturityDate: '2026-10-21',
     displayMaturity: 'PERP',
     frequency: 2,
     currency: 'USD'

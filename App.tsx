@@ -43,6 +43,7 @@ const App: React.FC = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return BONDS.filter(bond => {
+      if (bond.displayMaturity === 'PERP') return true;
       const maturity = new Date(bond.maturityDate);
       return maturity >= today;
     });
