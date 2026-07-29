@@ -633,7 +633,7 @@ export const BONDS: Bond[] = [
     id: 'ACCESS-PERP',
     name: 'ACCESS 9.125% PERP',
     couponRate: 9.125,
-    maturityDate: '2026-10-07',
+    maturityDate: '2027-01-07',
     displayMaturity: 'PERP',
     frequency: 2,
     currency: 'USD'
@@ -675,7 +675,7 @@ export const BONDS: Bond[] = [
     name: 'ETINL 8.875% 08/19/36',
     couponRate: 8.875,
     maturityDate: '2036-08-19',
-    frequency: 2,
+    frequency: 4,
     currency: 'USD'
   },
   {
@@ -683,6 +683,14 @@ export const BONDS: Bond[] = [
     name: 'FIDBAN 7.625% 10/28/26',
     couponRate: 7.625,
     maturityDate: '2026-10-28',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
+    id: 'UBANL-2026-NOV',
+    name: 'UBANL 6.75% 11/19/26',
+    couponRate: 6.75,
+    maturityDate: '2026-11-19',
     frequency: 2,
     currency: 'USD'
   },
@@ -828,6 +836,7 @@ export const BONDS: Bond[] = [
     couponRate: 5.5,
     maturityDate: '2042-12-11',
     frequency: 2,
+    dayCount: 'ACT/ACT',
     currency: 'USD'
   },
   {
@@ -1180,4 +1189,6 @@ export const BONDS: Bond[] = [
   }
 ];
 
-export const DEFAULT_SETTLEMENT = new Date().toISOString().split('T')[0];
+import { getTPlusTwoSettlementString } from './services/holidayUtils';
+
+export const DEFAULT_SETTLEMENT = getTPlusTwoSettlementString();

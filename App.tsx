@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Bond, CalculationResult, InputSource } from './types';
 import { BONDS, DEFAULT_SETTLEMENT } from './constants';
 import { calculateBondPrice, calculateYield } from './services/bondCalculator';
+import { getTPlusTwoSettlementString, isUSBankHoliday } from './services/holidayUtils';
 import { 
   Calculator, 
   Globe, 
@@ -18,22 +19,16 @@ import {
   X
 } from 'lucide-react';
 
-const getTodayString = () => {
-  const d = new Date();
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
-
 const App: React.FC = () => {
   // Default selected eurobond: NIGERIA 6.500% 11/28/27 (NG-2027-NOV)
   const [selectedBondId, setSelectedBondId] = useState<string>('NG-2027-NOV'); 
-  const [settlementDate, setSettlementDate] = useState<string>(getTodayString());
+  const [settlementDate, setSettlementDate] = useState<string>(getTPlusTwoSettlementString());
   const [faceValueStr, setFaceValueStr] = useState<string>("482,015.00"); 
   const [cleanPriceStr, setCleanPriceStr] = useState<string>("96.73"); 
   const [yieldStr, setYieldStr] = useState<string>("6.81"); 
   const [lastSource, setLastSource] = useState<InputSource>('price');
+
+  const holidayInfo = useMemo(() => isUSBankHoliday(settlementDate), [settlementDate]);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -457,8 +452,23 @@ const App: React.FC = () => {
                   type="date"
                   value={settlementDate}
                   onChange={(e) => setSettlementDate(e.target.value)}
-                  className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 px-4 text-white font-mono font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm appearance-none color-scheme-dark"
+                  className={`w-full bg-zinc-950 border rounded-xl py-3.5 px-4 text-white font-mono font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm appearance-none color-scheme-dark ${
+                    holidayInfo ? 'border-amber-500/50 bg-amber-500/10' : 'border-white/10'
+                  }`}
                 />
+                {holidayInfo && (
+                  <div className="mt-2.5 bg-amber-500/10 border border-amber-500/30 rounded-xl px-3.5 py-2 flex items-center justify-between gap-2 text-amber-400 font-mono shadow-lg transition-all">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse flex-shrink-0" />
+                      <span className="text-xs font-black uppercase tracking-wider">US HOLIDAY SELECTED</span>
+                    </div>
+                    {holidayInfo.name && (
+                      <span className="text-[10px] text-amber-300/80 font-medium truncate max-w-[160px] text-right">
+                        ({holidayInfo.name})
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </section>
@@ -488,9 +498,9 @@ const App: React.FC = () => {
                 <div className="group transition-transform active:scale-[0.99]">
                   <div className="flex justify-between items-start">
                     <FormLabel label={`Accrued Interest (${results.daysAccrued}d)`} />
-                    {results.poolFactor !== undefined && results.poolFactor < 1.0 && (
+                    {results.sinkFactor !== undefined && results.sinkFactor < 1.0 && (
                       <span className="bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider select-none">
-                        Sink Factor: {results.poolFactor}
+                        Sink Factor: {Number(results.sinkFactor.toFixed(3))}
                       </span>
                     )}
                   </div>
@@ -564,11 +574,11 @@ const App: React.FC = () => {
                 <span className="text-zinc-500">Next Coupon</span>
                 <span className="text-zinc-200">{results.nextCouponDate}</span>
               </div>
-              {results.poolFactor !== undefined && results.poolFactor < 1.0 && (
+              {results.sinkFactor !== undefined && results.sinkFactor < 1.0 && (
                 <>
                   <div className="flex justify-between items-center text-amber-400">
-                    <span className="text-zinc-500">Pool Factor</span>
-                    <span>{results.poolFactor.toFixed(3)}</span>
+                    <span className="text-zinc-500">Sink Factor</span>
+                    <span>{results.sinkFactor.toFixed(3)}</span>
                   </div>
                   <div className="flex justify-between items-center text-amber-400">
                     <span className="text-zinc-500">Outstanding Face</span>

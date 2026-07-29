@@ -30,20 +30,34 @@ function getCouponDates(settlement: Date, maturity: Date, frequency: number) {
   const matMonth = maturity.getMonth();
   const matYear = maturity.getFullYear();
 
+  const lastDayOfMatMonth = new Date(matYear, matMonth + 1, 0).getDate();
+  const isEOM = matDay === lastDayOfMatMonth;
+
   let periods = 0;
   let prevC = new Date(maturity);
   let nextC = new Date(maturity);
 
   while (periods < 1200) {
-    const checkDate = new Date(matYear, matMonth - (periods * monthsBetween), 1);
-    const lastDay = new Date(matYear, matMonth - (periods * monthsBetween) + 1, 0).getDate();
-    checkDate.setDate(Math.min(matDay, lastDay));
+    const targetMonth = matMonth - (periods * monthsBetween);
+    const checkDate = new Date(matYear, targetMonth, 1);
+    const lastDay = new Date(matYear, targetMonth + 1, 0).getDate();
+
+    if (isEOM) {
+      checkDate.setDate(lastDay);
+    } else {
+      checkDate.setDate(Math.min(matDay, lastDay));
+    }
 
     if (checkDate <= settlement) {
       prevC = checkDate;
-      const nextDate = new Date(matYear, matMonth - ((periods - 1) * monthsBetween), 1);
-      const nextLastDay = new Date(matYear, matMonth - ((periods - 1) * monthsBetween) + 1, 0).getDate();
-      nextDate.setDate(Math.min(matDay, nextLastDay));
+      const nextTargetMonth = matMonth - ((periods - 1) * monthsBetween);
+      const nextDate = new Date(matYear, nextTargetMonth, 1);
+      const nextLastDay = new Date(matYear, nextTargetMonth + 1, 0).getDate();
+      if (isEOM) {
+        nextDate.setDate(nextLastDay);
+      } else {
+        nextDate.setDate(Math.min(matDay, nextLastDay));
+      }
       nextC = nextDate;
       break;
     }
@@ -53,13 +67,13 @@ function getCouponDates(settlement: Date, maturity: Date, frequency: number) {
   return { prevC, nextC };
 }
 
-export function getPoolFactor(bond: Bond, settlementDate: string): number {
-  if (!bond.id.startsWith('IVYCST')) {
-    return 1.0;
-  }
-  
+export function getSinkFactor(bond: Bond, settlementDate: string): number {
   if (bond.id.startsWith('IVYCST-2032') && settlementDate.startsWith('2026')) {
     return 0.41694499;
+  }
+  
+  if (!bond.id.startsWith('IVYCST') && !bond.id.startsWith('SENEGL')) {
+    return 1.0;
   }
   
   const set = new Date(settlementDate);
@@ -80,13 +94,15 @@ export function getPoolFactor(bond: Bond, settlementDate: string): number {
   if (set < t1) {
     return 1.0;
   } else if (set >= t1 && set < t2) {
-    return 0.667; // Bloomberg's exact factor
+    return 2 / 3;
   } else if (set >= t2 && set < mat) {
-    return 0.333; // Bloomberg's exact factor
+    return 1 / 3;
   } else {
     return 0.0; // Fully matured
   }
 }
+
+export const getPoolFactor = getSinkFactor;
 
 export function calculateBondPrice(
   ytm: number,
@@ -105,12 +121,12 @@ export function calculateBondPrice(
     };
   }
 
-  const poolFactor = getPoolFactor(bond, settlementDate);
-  const outstandingFaceValue = faceValue * poolFactor;
+  const sinkFactor = getSinkFactor(bond, settlementDate);
+  const outstandingFaceValue = faceValue * sinkFactor;
 
   const freq = bond.frequency || 2;
   const cp = bond.couponRate;
-  const dc = bond.dayCount || '30E/360';
+  const dc = bond.dayCount || ((bond.id.startsWith('T-') || bond.id.startsWith('T ')) ? 'ACT/ACT' : '30E/360');
   const r = (ytm / 100) / freq;
 
   const { prevC, nextC } = getCouponDates(set, mat, freq);
@@ -121,7 +137,11 @@ export function calculateBondPrice(
 
   const actualDaysInPeriod = getDaysACT(prevC, nextC);
 
-  if (dc === 'ACT/365') {
+  if (dc === 'ACT/ACT') {
+    daysAccrued = getDaysACT(prevC, set);
+    daysInPeriodAI = actualDaysInPeriod;
+    daysInPeriodPV = actualDaysInPeriod;
+  } else if (dc === 'ACT/365') {
     daysAccrued = getDaysACT(prevC, set);
     daysInPeriodAI = 365 / freq;
     daysInPeriodPV = daysInPeriodAI;
@@ -198,7 +218,8 @@ export function calculateBondPrice(
     principalAmount, accruedAmount: finalAccruedAmount, totalConsideration: finalTotalConsideration,
     lastCouponDate: finalLastCouponDate,
     nextCouponDate: finalNextCouponDate,
-    poolFactor,
+    sinkFactor,
+    poolFactor: sinkFactor,
     outstandingFaceValue
   };
 }
