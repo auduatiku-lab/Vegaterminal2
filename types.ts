@@ -9,6 +9,7 @@ export interface Bond {
   currency: string;
   dayCount?: '30E/360' | 'ACT/365' | 'ACT/360' | 'ACT/ACT';
   isFlat?: boolean;
+  previousClose?: number;
 }
 
 export interface CalculationResult {

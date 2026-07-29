@@ -23,7 +23,7 @@ const App: React.FC = () => {
   // Default selected eurobond: NIGERIA 6.500% 11/28/27 (NG-2027-NOV)
   const [selectedBondId, setSelectedBondId] = useState<string>('NG-2027-NOV'); 
   const [settlementDate, setSettlementDate] = useState<string>(getTPlusTwoSettlementString());
-  const [faceValueStr, setFaceValueStr] = useState<string>("482,015.00"); 
+  const [faceValueStr, setFaceValueStr] = useState<string>("500,000.00"); 
   const [cleanPriceStr, setCleanPriceStr] = useState<string>("96.73"); 
   const [yieldStr, setYieldStr] = useState<string>("6.81"); 
   const [lastSource, setLastSource] = useState<InputSource>('price');
@@ -33,6 +33,7 @@ const App: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const lastFullFaceValueRef = useRef<string>("500,000.00");
 
   const faceValue = useMemo(() => {
     const n = parseFloat(faceValueStr.replace(/,/g, ''));
@@ -216,6 +217,13 @@ const App: React.FC = () => {
   };
 
   const handleFaceValueChange = (val: string) => {
+    // If backspacing twice (moving back two digits/characters) from the last entry, clear everything immediately
+    if (lastFullFaceValueRef.current && val.length <= lastFullFaceValueRef.current.length - 2) {
+      lastFullFaceValueRef.current = "";
+      setFaceValueStr("");
+      return;
+    }
+
     // Allow digits and one decimal point
     const sanitized = val.replace(/[^0-9.]/g, '');
     // Handle multiple decimal points by keeping only the first one
@@ -228,14 +236,32 @@ const App: React.FC = () => {
       if (!isNaN(num)) {
         const formattedInt = Math.floor(num).toLocaleString();
         const decimalPart = clean.includes('.') ? '.' + clean.split('.')[1] : '';
-        setFaceValueStr(formattedInt + decimalPart);
+        const newFormatted = formattedInt + decimalPart;
+        setFaceValueStr(newFormatted);
+        if (val.length >= lastFullFaceValueRef.current.length) {
+          lastFullFaceValueRef.current = newFormatted;
+        }
         return;
       }
     }
     setFaceValueStr(clean);
+    if (val.length >= lastFullFaceValueRef.current.length) {
+      lastFullFaceValueRef.current = clean;
+    }
   };
 
-  // Re-calculate yield or price when bond, settlement, or face value changes
+  // Reset price to previous trading day's closing price whenever a security is selected
+  useEffect(() => {
+    if (!activeBond) return;
+    const prevClose = activeBond.previousClose !== undefined ? activeBond.previousClose : 96.73;
+    const prevCloseStr = prevClose.toFixed(2);
+    setCleanPriceStr(prevCloseStr);
+    setLastSource('price');
+    const y = calculateYield(prevClose, activeBond, settlementDate, faceValue);
+    if (!isNaN(y)) setYieldStr(y.toFixed(6));
+  }, [selectedBondId]);
+
+  // Re-calculate yield or price when settlement or face value changes
   useEffect(() => {
     if (!activeBond) return;
     if (lastSource === 'price') {
@@ -253,7 +279,7 @@ const App: React.FC = () => {
         }
       }
     }
-  }, [selectedBondId, settlementDate, faceValue]);
+  }, [settlementDate, faceValue]);
 
   const formatCurrency = (val: number) => {
     if (val === undefined || val === null || isNaN(val)) return "0.00";
@@ -414,6 +440,11 @@ const App: React.FC = () => {
                     type="text"
                     inputMode="numeric"
                     value={faceValueStr}
+                    onFocus={() => {
+                      if (faceValueStr) {
+                        lastFullFaceValueRef.current = faceValueStr;
+                      }
+                    }}
                     onChange={(e) => handleFaceValueChange(e.target.value)}
                     className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 pl-10 pr-4 text-white font-mono font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm"
                   />
