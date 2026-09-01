@@ -72,7 +72,7 @@ export function getSinkFactor(bond: Bond, settlementDate: string): number {
     return 0.41694499;
   }
   
-  if (!bond.id.startsWith('IVYCST') && !bond.id.startsWith('SENEGL')) {
+  if (!bond.id.startsWith('IVYCST') && !bond.id.startsWith('SENEGL') && !bond.id.startsWith('KENINT') && !bond.name.startsWith('KENINT') && !bond.name.startsWith('KENYA')) {
     return 1.0;
   }
   

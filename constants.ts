@@ -703,6 +703,14 @@ export const BONDS: Bond[] = [
     currency: 'USD'
   },
   {
+    id: 'KENINT-2027-MAY',
+    name: 'KENINT 7.00% 05/22/27',
+    couponRate: 7.0,
+    maturityDate: '2027-05-22',
+    frequency: 2,
+    currency: 'USD'
+  },
+  {
     id: 'KENINT-2031-FEB',
     name: 'KENINT 9.75% 02/16/31',
     couponRate: 9.75,
