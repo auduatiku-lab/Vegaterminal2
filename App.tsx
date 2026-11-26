@@ -7,8 +7,6 @@ import { getTPlusTwoSettlementString, isUSBankHoliday } from './services/holiday
 import { 
   Calculator, 
   Globe, 
-  ArrowRightLeft, 
-  Info, 
   Calendar,
   DollarSign,
   Activity,
@@ -16,7 +14,10 @@ import {
   TrendingUp,
   Cpu,
   ChevronDown,
-  X
+  X,
+  Hash,
+  Copy,
+  Check
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -32,8 +33,16 @@ const App: React.FC = () => {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [copiedIsin, setCopiedIsin] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const lastFullFaceValueRef = useRef<string>("500,000.00");
+
+  const handleCopyIsin = () => {
+    if (!activeBond?.isin) return;
+    navigator.clipboard?.writeText(activeBond.isin).catch(() => {});
+    setCopiedIsin(true);
+    setTimeout(() => setCopiedIsin(false), 1800);
+  };
 
   const faceValue = useMemo(() => {
     const n = parseFloat(faceValueStr.replace(/,/g, ''));
@@ -102,13 +111,14 @@ const App: React.FC = () => {
     return availableBonds.filter(bond => {
       const bondNameLower = bond.name.toLowerCase();
       const bondIdLower = bond.id.toLowerCase();
+      const bondIsinLower = (bond.isin || '').toLowerCase();
       
       const matchesNormalized = tokens.every(token => 
-        bondNameLower.includes(token) || bondIdLower.includes(token)
+        bondNameLower.includes(token) || bondIdLower.includes(token) || bondIsinLower.includes(token)
       );
       
       const matchesOriginal = originalTokens.every(token => 
-        bondNameLower.includes(token) || bondIdLower.includes(token)
+        bondNameLower.includes(token) || bondIdLower.includes(token) || bondIsinLower.includes(token)
       );
 
       return matchesNormalized || matchesOriginal;
@@ -252,6 +262,7 @@ const App: React.FC = () => {
 
   // Reset price to previous trading day's closing price whenever a security is selected
   useEffect(() => {
+    setCopiedIsin(false);
     if (!activeBond) return;
     const prevClose = activeBond.previousClose !== undefined ? activeBond.previousClose : 96.73;
     const prevCloseStr = prevClose.toFixed(2);
@@ -335,22 +346,16 @@ const App: React.FC = () => {
         <div className="md:col-span-6 lg:col-span-6 md:col-start-1 md:row-start-1 order-1 flex flex-col gap-6">
           <section className="bg-zinc-900/60 border border-white/5 rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 blur-[60px] rounded-full -mr-16 -mt-16"></div>
-            
-            <div className="flex items-center justify-between mb-6 md:mb-8">
-              <h2 className="text-sm font-extrabold text-white flex items-center gap-2 uppercase tracking-tight">
-                <ArrowRightLeft size={18} className="text-cyan-400" />
-                Parameters
-              </h2>
-              {activeBond?.isFlat && (
-                <span className="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.15em] animate-pulse">
-                  Trades Flat
-                </span>
-              )}
-            </div>
-
             <div className="space-y-5 md:space-y-6">
               <div className="relative group" ref={dropdownRef}>
-                <FormLabel label="Select or Type Eurobond" icon={<Zap size={12} />} />
+                <div className="flex items-center justify-between gap-2">
+                  <FormLabel label="Select or Type Eurobond" icon={<Zap size={12} />} />
+                  {activeBond?.isFlat && (
+                    <span className="mb-2 bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-[0.15em] animate-pulse">
+                      Trades Flat
+                    </span>
+                  )}
+                </div>
                 <div className="relative">
                   <input
                     type="text"
@@ -426,6 +431,29 @@ const App: React.FC = () => {
                         </div>
                       )}
                     </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="relative">
+                <FormLabel label="ISIN Number" icon={<Hash size={12} />} />
+                <div className="relative">
+                  <input
+                    type="text"
+                    readOnly
+                    value={activeBond?.isin || ''}
+                    placeholder="Select a Eurobond to view ISIN"
+                    className="w-full bg-zinc-950/80 border border-white/10 rounded-xl py-3.5 pl-4 pr-12 text-cyan-400 font-mono font-bold tracking-wider focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-text select-all placeholder:text-zinc-600 placeholder:font-sans placeholder:font-medium placeholder:tracking-normal"
+                  />
+                  {activeBond?.isin && (
+                    <button
+                      type="button"
+                      onClick={handleCopyIsin}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-zinc-400 hover:text-cyan-400 hover:bg-cyan-500/10 transition-colors focus:outline-none"
+                      title={copiedIsin ? 'Copied ISIN' : 'Copy ISIN'}
+                    >
+                      {copiedIsin ? <Check size={15} className="text-emerald-400" /> : <Copy size={15} />}
+                    </button>
                   )}
                 </div>
               </div>
@@ -511,11 +539,6 @@ const App: React.FC = () => {
         <div className="md:col-span-6 lg:col-span-6 md:col-start-7 lg:col-start-7 md:row-start-1 md:row-span-2 order-2 h-full flex flex-col">
           <section className="bg-zinc-900/60 border border-white/5 rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-10 backdrop-blur-xl shadow-2xl flex-grow flex flex-col relative overflow-hidden">
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-violet-600/5 blur-[100px] rounded-full -mb-32 -mr-32"></div>
-            
-            <div className="flex items-center gap-3 text-zinc-400 mb-8 md:mb-10">
-              <Info size={20} className="text-cyan-500" />
-              <span className="text-xs font-black uppercase tracking-[0.3em] text-zinc-500">Pricing Output</span>
-            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 flex-grow">
               <div className="md:col-span-12">

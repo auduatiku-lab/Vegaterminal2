@@ -2,6 +2,7 @@
 export interface Bond {
   id: string;
   name: string;
+  isin?: string;
   couponRate: number;
   maturityDate: string;
   displayMaturity?: string; // For bonds where math anchor differs from legal maturity
