@@ -301,14 +301,14 @@ const App: React.FC = () => {
   };
 
   const FormLabel: React.FC<{ label: string; icon?: React.ReactNode }> = ({ label, icon }) => (
-    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-2 flex items-center gap-2">
+    <label className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.18em] md:tracking-[0.2em] text-zinc-500 mb-1 md:mb-2 flex items-center gap-1.5 md:gap-2">
       <span className="text-zinc-600">{icon}</span>
       {label}
     </label>
   );
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 p-4 md:p-8 lg:p-10 flex flex-col items-center selection:bg-cyan-500/30 touch-manipulation">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 px-3 py-2.5 md:p-8 lg:p-10 flex flex-col items-center selection:bg-cyan-500/30 touch-manipulation">
       {/* Header hidden on Mobile/Tablet, visible only on Desktop (lg) */}
       <header className="hidden lg:flex w-full max-w-7xl flex-row items-center justify-between mb-[18px] gap-6">
         <div className="flex items-center gap-4">
@@ -339,19 +339,21 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 w-full max-w-7xl items-start">
+      <main className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-8 w-full max-w-7xl items-start">
         
         {/* 1. PARAMETERS CARD */}
         {/* Mobile: Top (order-1) | Desktop: Left Column Row 1 */}
         <div className="md:col-span-6 lg:col-span-6 md:col-start-1 md:row-start-1 order-1 flex flex-col gap-6">
-          <section className="bg-zinc-900/60 border border-white/5 rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 blur-[60px] rounded-full -mr-16 -mt-16"></div>
-            <div className="space-y-5 md:space-y-6">
+          <section className="bg-zinc-900/60 border border-white/5 rounded-3xl md:rounded-[2.5rem] px-4 pt-3 pb-3.5 md:p-8 backdrop-blur-xl shadow-2xl relative">
+            <div className="absolute inset-0 overflow-hidden rounded-3xl md:rounded-[2.5rem] pointer-events-none">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 blur-[60px] rounded-full -mr-16 -mt-16"></div>
+            </div>
+            <div className="space-y-2.5 md:space-y-6 relative z-10">
               <div className="relative group" ref={dropdownRef}>
                 <div className="flex items-center justify-between gap-2">
                   <FormLabel label="Select or Type Eurobond" icon={<Zap size={12} />} />
                   {activeBond?.isFlat && (
-                    <span className="mb-2 bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-[0.15em] animate-pulse">
+                    <span className="mb-1 md:mb-2 bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-[0.15em] animate-pulse">
                       Trades Flat
                     </span>
                   )}
@@ -377,7 +379,7 @@ const App: React.FC = () => {
                       setIsDropdownOpen(true);
                     }}
                     placeholder="Type or Select Eurobond.."
-                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 pl-4 pr-[62.05px] text-white font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-text"
+                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-2 md:py-3.5 pl-3.5 md:pl-4 pr-[62.05px] text-white font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-text"
                   />
                   {searchTerm && (
                     <button
@@ -443,7 +445,7 @@ const App: React.FC = () => {
                     readOnly
                     value={activeBond?.isin || ''}
                     placeholder="Select a Eurobond to view ISIN"
-                    className="w-full bg-zinc-950/80 border border-white/10 rounded-xl py-3.5 pl-4 pr-12 text-cyan-400 font-mono font-bold tracking-wider focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-text select-all placeholder:text-zinc-600 placeholder:font-sans placeholder:font-medium placeholder:tracking-normal"
+                    className="w-full bg-zinc-950/80 border border-white/10 rounded-xl py-2 md:py-3.5 pl-3.5 md:pl-4 pr-12 text-cyan-400 font-mono font-bold tracking-wider focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm cursor-text select-all placeholder:text-zinc-600 placeholder:font-sans placeholder:font-medium placeholder:tracking-normal"
                   />
                   {activeBond?.isin && (
                     <button
@@ -461,8 +463,8 @@ const App: React.FC = () => {
               <div className="relative">
                 <FormLabel label="Face Value" icon={<TrendingUp size={12} />} />
                 <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">
-                    <DollarSign size={16} />
+                  <div className="absolute left-3.5 md:left-4 top-1/2 -translate-y-1/2 text-zinc-500">
+                    <DollarSign size={15} />
                   </div>
                   <input
                     type="text"
@@ -474,12 +476,12 @@ const App: React.FC = () => {
                       }
                     }}
                     onChange={(e) => handleFaceValueChange(e.target.value)}
-                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-3.5 pl-10 pr-4 text-white font-mono font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm"
+                    className="w-full bg-zinc-950 border border-white/10 rounded-xl py-2 md:py-3.5 pl-9 md:pl-10 pr-4 text-white font-mono font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3 md:gap-4">
                 <div className="group">
                   <FormLabel label="Price" />
                   <input
@@ -487,7 +489,7 @@ const App: React.FC = () => {
                     inputMode="decimal"
                     value={cleanPriceStr}
                     onChange={(e) => handlePriceChange(e.target.value)}
-                    className={`w-full bg-zinc-950 border rounded-xl py-3.5 px-4 font-mono font-bold text-sm focus:outline-none transition-all ${
+                    className={`w-full bg-zinc-950 border rounded-xl py-2 md:py-3.5 px-3.5 md:px-4 font-mono font-bold text-sm focus:outline-none transition-all ${
                       lastSource === 'price' ? 'border-cyan-500 ring-4 ring-cyan-500/10 text-cyan-400 shadow-[0_0_20px_-5px_rgba(6,182,212,0.3)]' : 'border-white/10 text-zinc-300'
                     }`}
                   />
@@ -499,7 +501,7 @@ const App: React.FC = () => {
                     inputMode="decimal"
                     value={yieldStr}
                     onChange={(e) => handleYieldChange(e.target.value)}
-                    className={`w-full bg-zinc-950 border rounded-xl py-3.5 px-4 font-mono font-bold text-sm focus:outline-none transition-all ${
+                    className={`w-full bg-zinc-950 border rounded-xl py-2 md:py-3.5 px-3.5 md:px-4 font-mono font-bold text-sm focus:outline-none transition-all ${
                       lastSource === 'yield' ? 'border-emerald-500 ring-4 ring-emerald-500/10 text-emerald-400 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]' : 'border-white/10 text-zinc-300'
                     }`}
                   />
@@ -512,12 +514,12 @@ const App: React.FC = () => {
                   type="date"
                   value={settlementDate}
                   onChange={(e) => setSettlementDate(e.target.value)}
-                  className={`w-full bg-zinc-950 border rounded-xl py-3.5 px-4 text-white font-mono font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm appearance-none color-scheme-dark ${
+                  className={`w-full bg-zinc-950 border rounded-xl py-2 md:py-3.5 px-3.5 md:px-4 text-white font-mono font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-sm appearance-none color-scheme-dark ${
                     holidayInfo ? 'border-amber-500/50 bg-amber-500/10' : 'border-white/10'
                   }`}
                 />
                 {holidayInfo && (
-                  <div className="mt-2.5 bg-amber-500/10 border border-amber-500/30 rounded-xl px-3.5 py-2 flex items-center justify-between gap-2 text-amber-400 font-mono shadow-lg transition-all">
+                  <div className="mt-2 bg-amber-500/10 border border-amber-500/30 rounded-xl px-3.5 py-2 flex items-center justify-between gap-2 text-amber-400 font-mono shadow-lg transition-all">
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse flex-shrink-0" />
                       <span className="text-xs font-black uppercase tracking-wider">US HOLIDAY SELECTED</span>
@@ -537,15 +539,15 @@ const App: React.FC = () => {
         {/* 2. PRICING OUTPUT CARD */}
         {/* Mobile: Second (order-2) | Desktop: Right Column (col-start-7), Spanning Rows 1 & 2 */}
         <div className="md:col-span-6 lg:col-span-6 md:col-start-7 lg:col-start-7 md:row-start-1 md:row-span-2 order-2 h-full flex flex-col">
-          <section className="bg-zinc-900/60 border border-white/5 rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-10 backdrop-blur-xl shadow-2xl flex-grow flex flex-col relative overflow-hidden">
+          <section className="bg-zinc-900/60 border border-white/5 rounded-3xl md:rounded-[3rem] px-4 pt-3 pb-4 md:p-10 backdrop-blur-xl shadow-2xl flex-grow flex flex-col relative overflow-hidden">
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-violet-600/5 blur-[100px] rounded-full -mb-32 -mr-32"></div>
 
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 flex-grow">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-12 flex-grow">
               <div className="md:col-span-12">
-                <div className="group transition-transform active:scale-[0.99] mb-8 md:mb-10">
+                <div className="group transition-transform active:scale-[0.99] mb-2.5 md:mb-10">
                   <FormLabel label="Principal Amount" icon={<DollarSign size={12} />} />
-                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono text-white tracking-tighter whitespace-nowrap overflow-visible">
-                    <span className="text-zinc-500 text-xl md:text-2xl lg:text-3xl font-medium mr-1">$</span>
+                  <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono text-white tracking-tighter whitespace-nowrap overflow-visible leading-tight">
+                    <span className="text-zinc-500 text-lg md:text-2xl lg:text-3xl font-medium mr-1">$</span>
                     {formatCurrency(results.principalAmount)}
                   </div>
                 </div>
@@ -559,23 +561,23 @@ const App: React.FC = () => {
                       </span>
                     )}
                   </div>
-                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black mono text-zinc-300 tracking-tighter whitespace-nowrap overflow-visible">
-                    <span className="text-zinc-500 text-lg md:text-xl lg:text-2xl font-medium mr-1">$</span>
+                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black mono text-zinc-300 tracking-tighter whitespace-nowrap overflow-visible leading-tight">
+                    <span className="text-zinc-500 text-base md:text-xl lg:text-2xl font-medium mr-1">$</span>
                     {formatCurrency(results.accruedAmount)}
                   </div>
                 </div>
 
-                <div className="mt-[15px] md:mt-[36px]">
-                  <div className="bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 border border-white/10 rounded-[2rem] p-6 md:p-8 relative overflow-hidden group shadow-2xl transition-all hover:scale-[1.01] hover:shadow-amber-500/10 active:scale-[0.98]">
-                    <div className="absolute top-0 right-0 p-4 opacity-5 md:opacity-10 group-hover:opacity-20 transition-opacity">
-                      <Zap size={60} className="text-amber-500" />
+                <div className="mt-2.5 md:mt-[36px]">
+                  <div className="bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 border border-white/10 rounded-2xl md:rounded-[2rem] p-3.5 md:p-8 relative overflow-hidden group shadow-2xl transition-all hover:scale-[1.01] hover:shadow-amber-500/10 active:scale-[0.98]">
+                    <div className="absolute top-0 right-0 p-3 md:p-4 opacity-5 md:opacity-10 group-hover:opacity-20 transition-opacity">
+                      <Zap size={48} className="text-amber-500 md:w-[60px] md:h-[60px]" />
                     </div>
                     <div className="relative z-10">
                       <FormLabel label="Net Settlement (All-in)" />
-                      <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono text-yellow-300 mb-4 tracking-tighter whitespace-nowrap overflow-visible drop-shadow-[0_0_12px_rgba(253,224,71,0.2)]">
+                      <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mono text-yellow-300 mb-1 md:mb-4 tracking-tighter whitespace-nowrap overflow-visible leading-tight drop-shadow-[0_0_12px_rgba(253,224,71,0.2)]">
                         ${formatCurrency(results.totalConsideration)}
                       </div>
-                      <p className="text-[10px] text-zinc-500 font-bold leading-relaxed max-w-xs uppercase tracking-wider italic">
+                      <p className="text-[9px] md:text-[10px] text-zinc-500 font-bold leading-snug md:leading-relaxed max-w-xs uppercase tracking-wider italic">
                         Final cash consideration for {activeBond?.currency || '—'} on {settlementDate}.
                       </p>
                     </div>
@@ -584,7 +586,7 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            <section className="mt-8 md:mt-10 pt-8 md:pt-10 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            <section className="mt-4 md:mt-10 pt-4 md:pt-10 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
               <div>
                 <p className="text-[8px] md:text-[9px] font-black text-zinc-600 uppercase mb-2 tracking-[0.2em]">Coupon</p>
                 <p className="text-xs md:text-sm font-black text-zinc-100 mono">{activeBond ? `${activeBond.couponRate.toFixed(4)}%` : '—'}</p>
